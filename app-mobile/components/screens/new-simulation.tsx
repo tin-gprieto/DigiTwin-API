@@ -148,187 +148,191 @@ export function NewSimulation() {
           </CardContent>
         </Card>
       )}
-      <Card>
-        <CardHeader>
-          <CardTitle className="flex items-center gap-2 text-base">
-            <span className="flex h-7 w-7 items-center justify-center rounded-lg bg-primary/10">
-              <Calendar className="h-4 w-4 text-primary" />
-            </span>
-            {lang === "es" ? "Configuracion del Cultivo" : "Crop Configuration"}
-          </CardTitle>
-        </CardHeader>
-        <CardContent>
-          <FieldGroup>
-            <Field>
-              <FieldLabel>{lang === "es" ? "Cultivo" : "Crop"}</FieldLabel>
-              <Select
-                value={config.crop_name}
-                onValueChange={(v) => updateConfig("crop_name", v)}
-                disabled={loadingCrops}
-              >
-                <SelectTrigger className="w-full">
-                  <SelectValue placeholder={loadingCrops ? (lang === "es" ? "Cargando..." : "Loading...") : (lang === "es" ? "Seleccionar cultivo" : "Select crop")} />
-                </SelectTrigger>
-                <SelectContent>
-                  {crops.map((crop) => (
-                    <SelectItem key={crop} value={crop} className="capitalize">
-                      {crop}
-                    </SelectItem>
-                  ))}
-                </SelectContent>
-              </Select>
-            </Field>
+      <div className="flex flex-col gap-4 md:grid md:grid-cols-2">
+        <Card>
+          <CardHeader>
+            <CardTitle className="flex items-center gap-2 text-base">
+              <span className="flex h-7 w-7 items-center justify-center rounded-lg bg-primary/10">
+                <Calendar className="h-4 w-4 text-primary" />
+              </span>
+              {lang === "es" ? "Configuracion del Cultivo" : "Crop Configuration"}
+            </CardTitle>
+          </CardHeader>
+          <CardContent>
+            <FieldGroup>
+              <Field>
+                <FieldLabel>{lang === "es" ? "Cultivo" : "Crop"}</FieldLabel>
+                <Select
+                  value={config.crop_name}
+                  onValueChange={(v) => updateConfig("crop_name", v)}
+                  disabled={loadingCrops}
+                >
+                  <SelectTrigger className="w-full">
+                    <SelectValue placeholder={loadingCrops ? (lang === "es" ? "Cargando..." : "Loading...") : (lang === "es" ? "Seleccionar cultivo" : "Select crop")} />
+                  </SelectTrigger>
+                  <SelectContent>
+                    {crops.map((crop) => (
+                      <SelectItem key={crop} value={crop} className="capitalize">
+                        {crop}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+              </Field>
 
-            <Field>
-              <FieldLabel>{lang === "es" ? "Variedad" : "Variety"}</FieldLabel>
-              <Select
-                value={config.variety_name}
-                onValueChange={(v) => updateConfig("variety_name", v)}
-                disabled={loadingVarieties || !config.crop_name}
-              >
-                <SelectTrigger className="w-full">
-                  <SelectValue placeholder={loadingVarieties ? (lang === "es" ? "Cargando..." : "Loading...") : (lang === "es" ? "Seleccionar variedad" : "Select variety")} />
-                </SelectTrigger>
-                <SelectContent>
-                  {varieties.map((variety) => (
-                    <SelectItem key={variety} value={variety}>
-                      {variety.replace(/_/g, " ")}
-                    </SelectItem>
-                  ))}
-                </SelectContent>
-              </Select>
-            </Field>
+              <Field>
+                <FieldLabel>{lang === "es" ? "Variedad" : "Variety"}</FieldLabel>
+                <Select
+                  value={config.variety_name}
+                  onValueChange={(v) => updateConfig("variety_name", v)}
+                  disabled={loadingVarieties || !config.crop_name}
+                >
+                  <SelectTrigger className="w-full">
+                    <SelectValue placeholder={loadingVarieties ? (lang === "es" ? "Cargando..." : "Loading...") : (lang === "es" ? "Seleccionar variedad" : "Select variety")} />
+                  </SelectTrigger>
+                  <SelectContent>
+                    {varieties.map((variety) => (
+                      <SelectItem key={variety} value={variety}>
+                        {variety.replace(/_/g, " ")}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+              </Field>
 
-            <Field>
-              <FieldLabel>
-                {lang === "es" ? "Fecha de inicio" : "Start date"}
-              </FieldLabel>
-              <Input
-                type="date"
-                value={config.fecha_inicio}
-                onChange={(e) => updateConfig("fecha_inicio", e.target.value)}
-                className="w-full"
-              />
-            </Field>
+              <Field>
+                <FieldLabel>
+                  {lang === "es" ? "Fecha de inicio" : "Start date"}
+                </FieldLabel>
+                <Input
+                  type="date"
+                  value={config.fecha_inicio}
+                  onChange={(e) => updateConfig("fecha_inicio", e.target.value)}
+                  className="w-full"
+                />
+              </Field>
 
-            <Field>
-              <FieldLabel>
-                {lang === "es" ? "Dias de cultivo" : "Cultivation days"}
-              </FieldLabel>
-              <FieldDescription>
-                {config.dias_cultivo} {lang === "es" ? "dias" : "days"}
-              </FieldDescription>
-              <Slider
-                value={[config.dias_cultivo]}
-                onValueChange={([v]) => updateConfig("dias_cultivo", v)}
-                min={1}
-                max={90}
-                step={1}
-                className="mt-2"
-              />
-            </Field>
-          </FieldGroup>
-        </CardContent>
-      </Card>
+              <Field>
+                <FieldLabel>
+                  {lang === "es" ? "Dias de cultivo" : "Cultivation days"}
+                </FieldLabel>
+                <FieldDescription>
+                  {config.dias_cultivo} {lang === "es" ? "dias" : "days"}
+                </FieldDescription>
+                <Slider
+                  value={[config.dias_cultivo]}
+                  onValueChange={([v]) => updateConfig("dias_cultivo", v)}
+                  min={1}
+                  max={90}
+                  step={1}
+                  className="mt-2"
+                />
+              </Field>
+            </FieldGroup>
+          </CardContent>
+        </Card>
 
-      <Card>
-        <CardHeader>
-          <CardTitle className="flex items-center gap-2 text-base">
-            <span className="flex h-7 w-7 items-center justify-center rounded-lg bg-chart-3/20">
-              <Thermometer className="h-4 w-4 text-chart-3" />
-            </span>
-            {lang === "es" ? "Condiciones Ambientales" : "Environmental Conditions"}
-          </CardTitle>
-        </CardHeader>
-        <CardContent>
-          <FieldGroup>
-            <Field>
-              <FieldLabel className="flex items-center gap-2">
-                <Thermometer className="h-4 w-4" />
-                {lang === "es" ? "Temperatura ambiente" : "Ambient temperature"}
-              </FieldLabel>
-              <FieldDescription>
-                {config.temperatura_ambiente.toFixed(1)}°C
-              </FieldDescription>
-              <Slider
-                value={[config.temperatura_ambiente]}
-                onValueChange={([v]) => updateConfig("temperatura_ambiente", v)}
-                min={10}
-                max={40}
-                step={0.5}
-                className="mt-2"
-              />
-            </Field>
+        <div className="flex flex-col gap-4">
+          <Card>
+            <CardHeader>
+              <CardTitle className="flex items-center gap-2 text-base">
+                <span className="flex h-7 w-7 items-center justify-center rounded-lg bg-chart-3/20">
+                  <Thermometer className="h-4 w-4 text-chart-3" />
+                </span>
+                {lang === "es" ? "Condiciones Ambientales" : "Environmental Conditions"}
+              </CardTitle>
+            </CardHeader>
+            <CardContent>
+              <FieldGroup>
+                <Field>
+                  <FieldLabel className="flex items-center gap-2">
+                    <Thermometer className="h-4 w-4" />
+                    {lang === "es" ? "Temperatura ambiente" : "Ambient temperature"}
+                  </FieldLabel>
+                  <FieldDescription>
+                    {config.temperatura_ambiente.toFixed(1)}°C
+                  </FieldDescription>
+                  <Slider
+                    value={[config.temperatura_ambiente]}
+                    onValueChange={([v]) => updateConfig("temperatura_ambiente", v)}
+                    min={10}
+                    max={40}
+                    step={0.5}
+                    className="mt-2"
+                  />
+                </Field>
 
-            <Field>
-              <FieldLabel className="flex items-center gap-2">
-                <Sun className="h-4 w-4" />
-                {lang === "es" ? "Nivel de luz" : "Light level"}
-              </FieldLabel>
-              <div className="grid grid-cols-3 gap-2 mt-2">
-                {(["baja", "media", "alta"] as LightLevel[]).map((level) => (
-                  <Button
-                    key={level}
-                    type="button"
-                    variant={config.luz === level ? "default" : "outline"}
-                    size="sm"
-                    onClick={() => updateConfig("luz", level)}
-                    className="w-full"
-                  >
-                    {LIGHT_LEVEL_LABELS[level][lang]}
-                  </Button>
-                ))}
-              </div>
-            </Field>
-          </FieldGroup>
-        </CardContent>
-      </Card>
+                <Field>
+                  <FieldLabel className="flex items-center gap-2">
+                    <Sun className="h-4 w-4" />
+                    {lang === "es" ? "Nivel de luz" : "Light level"}
+                  </FieldLabel>
+                  <div className="grid grid-cols-3 gap-2 mt-2">
+                    {(["baja", "media", "alta"] as LightLevel[]).map((level) => (
+                      <Button
+                        key={level}
+                        type="button"
+                        variant={config.luz === level ? "default" : "outline"}
+                        size="sm"
+                        onClick={() => updateConfig("luz", level)}
+                        className="w-full"
+                      >
+                        {LIGHT_LEVEL_LABELS[level][lang]}
+                      </Button>
+                    ))}
+                  </div>
+                </Field>
+              </FieldGroup>
+            </CardContent>
+          </Card>
 
-      <Card>
-        <CardHeader>
-          <CardTitle className="flex items-center gap-2 text-base">
-            <span className="flex h-7 w-7 items-center justify-center rounded-lg bg-chart-2/20">
-              <Droplets className="h-4 w-4 text-chart-2" />
-            </span>
-            {lang === "es" ? "Solucion Nutritiva" : "Nutrient Solution"}
-          </CardTitle>
-        </CardHeader>
-        <CardContent>
-          <FieldGroup>
-            <Field>
-              <FieldLabel className="flex items-center gap-2">
-                <Droplets className="h-4 w-4" />
-                pH
-              </FieldLabel>
-              <FieldDescription>{config.ph.toFixed(1)}</FieldDescription>
-              <Slider
-                value={[config.ph]}
-                onValueChange={([v]) => updateConfig("ph", v)}
-                min={4}
-                max={9}
-                step={0.1}
-                className="mt-2"
-              />
-            </Field>
+          <Card>
+            <CardHeader>
+              <CardTitle className="flex items-center gap-2 text-base">
+                <span className="flex h-7 w-7 items-center justify-center rounded-lg bg-chart-2/20">
+                  <Droplets className="h-4 w-4 text-chart-2" />
+                </span>
+                {lang === "es" ? "Solucion Nutritiva" : "Nutrient Solution"}
+              </CardTitle>
+            </CardHeader>
+            <CardContent>
+              <FieldGroup>
+                <Field>
+                  <FieldLabel className="flex items-center gap-2">
+                    <Droplets className="h-4 w-4" />
+                    pH
+                  </FieldLabel>
+                  <FieldDescription>{config.ph.toFixed(1)}</FieldDescription>
+                  <Slider
+                    value={[config.ph]}
+                    onValueChange={([v]) => updateConfig("ph", v)}
+                    min={4}
+                    max={9}
+                    step={0.1}
+                    className="mt-2"
+                  />
+                </Field>
 
-            <Field>
-              <FieldLabel className="flex items-center gap-2">
-                <Zap className="h-4 w-4" />
-                {lang === "es" ? "Conductividad electrica (EC)" : "Electrical Conductivity (EC)"}
-              </FieldLabel>
-              <FieldDescription>{config.ec.toFixed(1)} mS/cm</FieldDescription>
-              <Slider
-                value={[config.ec]}
-                onValueChange={([v]) => updateConfig("ec", v)}
-                min={0.5}
-                max={5}
-                step={0.1}
-                className="mt-2"
-              />
-            </Field>
-          </FieldGroup>
-        </CardContent>
-      </Card>
+                <Field>
+                  <FieldLabel className="flex items-center gap-2">
+                    <Zap className="h-4 w-4" />
+                    {lang === "es" ? "Conductividad electrica (EC)" : "Electrical Conductivity (EC)"}
+                  </FieldLabel>
+                  <FieldDescription>{config.ec.toFixed(1)} mS/cm</FieldDescription>
+                  <Slider
+                    value={[config.ec]}
+                    onValueChange={([v]) => updateConfig("ec", v)}
+                    min={0.5}
+                    max={5}
+                    step={0.1}
+                    className="mt-2"
+                  />
+                </Field>
+              </FieldGroup>
+            </CardContent>
+          </Card>
+        </div>
+      </div>
 
       {error && (
         <Card className="border-destructive bg-destructive/10">
