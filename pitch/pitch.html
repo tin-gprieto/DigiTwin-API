@@ -1,931 +1,2286 @@
 <!doctype html>
 <html lang="es">
-<head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>DigiTwin — Pitch</title>
-<link rel="preconnect" href="https://fonts.googleapis.com" />
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-<link href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;700;800&family=Geist+Mono:wght@500;600&display=swap" rel="stylesheet" />
-<script src="https://unpkg.com/lucide@latest/dist/umd/lucide.js" defer></script>
-<style>
-  :root {
-    --background: oklch(0.98 0.005 145);
-    --foreground: oklch(0.15 0.02 145);
-    --card: oklch(1 0 0);
-    --card-foreground: oklch(0.15 0.02 145);
-    --primary: oklch(0.55 0.18 145);
-    --primary-foreground: oklch(0.98 0 0);
-    --secondary: oklch(0.94 0.02 145);
-    --secondary-foreground: oklch(0.25 0.03 145);
-    --muted: oklch(0.94 0.01 145);
-    --muted-foreground: oklch(0.45 0.02 145);
-    --accent: oklch(0.92 0.03 145);
-    --accent-foreground: oklch(0.25 0.03 145);
-    --border: oklch(0.88 0.02 145);
-    --chart-1: oklch(0.55 0.18 145);
-    --chart-2: oklch(0.65 0.15 200);
-    --chart-3: oklch(0.70 0.12 80);
-    --chart-4: oklch(0.60 0.20 35);
-    --chart-5: oklch(0.50 0.15 280);
-    --violet: oklch(0.55 0.20 305);
-    --radius: 0.75rem;
-  }
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>DigiTwin — Pitch</title>
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+        <link
+            href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;700;800&family=Geist+Mono:wght@500;600&display=swap"
+            rel="stylesheet"
+        />
+        <script
+            src="https://unpkg.com/lucide@latest/dist/umd/lucide.js"
+            defer
+        ></script>
+        <style>
+            :root {
+                --background: oklch(0.98 0.005 145);
+                --foreground: oklch(0.15 0.02 145);
+                --card: oklch(1 0 0);
+                --card-foreground: oklch(0.15 0.02 145);
+                --primary: oklch(0.55 0.18 145);
+                --primary-foreground: oklch(0.98 0 0);
+                --secondary: oklch(0.94 0.02 145);
+                --secondary-foreground: oklch(0.25 0.03 145);
+                --muted: oklch(0.94 0.01 145);
+                --muted-foreground: oklch(0.15 0.02 145);
+                --accent: oklch(0.92 0.03 145);
+                --accent-foreground: oklch(0.25 0.03 145);
+                --border: oklch(0.88 0.02 145);
+                --chart-1: oklch(0.55 0.18 145);
+                --chart-2: oklch(0.65 0.15 200);
+                --chart-3: oklch(0.7 0.12 80);
+                --chart-4: oklch(0.6 0.2 35);
+                --chart-5: oklch(0.5 0.15 280);
+                --violet: oklch(0.55 0.2 305);
+                --radius: 0.75rem;
+            }
 
-  * { box-sizing: border-box; }
+            * {
+                box-sizing: border-box;
+            }
 
-  html { scroll-behavior: smooth; }
+            html {
+                scroll-behavior: smooth;
+            }
 
-  body {
-    margin: 0;
-    background: var(--background);
-    color: var(--foreground);
-    font-family: 'Geist', system-ui, sans-serif;
-    font-size: 1rem; line-height: 1.55;
-    -webkit-font-smoothing: antialiased;
-  }
+            body {
+                margin: 0;
+                background: var(--background);
+                color: var(--foreground);
+                font-family: "Geist", system-ui, sans-serif;
+                font-size: 1rem;
+                line-height: 1.55;
+                -webkit-font-smoothing: antialiased;
+            }
 
-  /* subtle agricultural grid texture on the page background */
-  body::before {
-    content: "";
-    position: fixed;
-    inset: 0;
-    background-image:
-      radial-gradient(circle at 15% 20%, color-mix(in srgb, var(--chart-1) 10%, transparent), transparent 40%),
-      radial-gradient(circle at 85% 80%, color-mix(in srgb, var(--chart-2) 8%, transparent), transparent 45%);
-    pointer-events: none;
-    z-index: 0;
-  }
+            /* subtle agricultural grid texture on the page background */
+            body::before {
+                content: "";
+                position: fixed;
+                inset: 0;
+                background-image:
+                    radial-gradient(
+                        circle at 15% 20%,
+                        color-mix(in srgb, var(--chart-1) 10%, transparent),
+                        transparent 40%
+                    ),
+                    radial-gradient(
+                        circle at 85% 80%,
+                        color-mix(in srgb, var(--chart-2) 8%, transparent),
+                        transparent 45%
+                    );
+                pointer-events: none;
+                z-index: 0;
+            }
 
-  /* ---------- Top header (mirrors app-mobile header.tsx) ---------- */
-  .topbar {
-    position: fixed;
-    top: 0; left: 0; right: 0;
-    z-index: 50;
-    height: 5rem;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding: 0 2rem;
-    background: color-mix(in srgb, var(--background) 80%, transparent);
-    backdrop-filter: blur(8px);
-    border-bottom: 1px solid color-mix(in srgb, var(--border) 60%, transparent);
-  }
-  .topbar .brand { display: flex; align-items: center; gap: 0.75rem; }
-  .topbar .brand-mark {
-    display: flex; align-items: center; justify-content: center;
-    height: 2.75rem; width: 2.75rem; border-radius: 0.65rem;
-    background: var(--primary); color: var(--primary-foreground);
-  }
-  .topbar .brand-mark svg { width: 1.6rem; height: 1.6rem; }
-  .topbar .brand-name { font-weight: 700; font-size: 1.45rem; letter-spacing: -0.01em; }
-  .slide-counter {
-    font-family: 'Geist Mono', monospace;
-    font-size: 0.95rem;
-    color: var(--muted-foreground);
-  }
+            /* ---------- Top header (mirrors app-mobile header.tsx) ---------- */
+            .topbar {
+                position: fixed;
+                top: 0;
+                left: 0;
+                right: 0;
+                z-index: 50;
+                height: 5rem;
+                display: flex;
+                align-items: center;
+                justify-content: space-between;
+                padding: 0 2rem;
+                background: color-mix(
+                    in srgb,
+                    var(--background) 80%,
+                    transparent
+                );
+                backdrop-filter: blur(8px);
+                border-bottom: 1px solid
+                    color-mix(in srgb, var(--border) 60%, transparent);
+            }
+            .topbar .brand {
+                display: flex;
+                align-items: center;
+                gap: 0.75rem;
+            }
+            .topbar .brand-mark {
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                height: 2.75rem;
+                width: 2.75rem;
+                border-radius: 0.65rem;
+                background: var(--primary);
+                color: var(--primary-foreground);
+            }
+            .topbar .brand-mark svg {
+                width: 1.6rem;
+                height: 1.6rem;
+            }
+            .topbar .brand-name {
+                font-weight: 700;
+                font-size: 1.45rem;
+                letter-spacing: -0.01em;
+            }
+            .slide-counter {
+                font-family: "Geist Mono", monospace;
+                font-size: 0.95rem;
+                color: var(--muted-foreground);
+            }
 
-  /* ---------- Slide deck ---------- */
-  .deck {
-    scroll-snap-type: y mandatory;
-    overflow-y: auto;
-    height: 100vh;
-  }
-  .slide {
-    position: relative;
-    z-index: 1;
-    min-height: 100vh;
-    width: 100%;
-    scroll-snap-align: start;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    padding: 7rem 2.5vw 4rem;
-  }
-  .slide-inner { max-width: 1360px; margin: 0 auto; width: 100%; }
+            /* ---------- Slide deck ---------- */
+            .deck {
+                scroll-snap-type: y mandatory;
+                overflow-y: auto;
+                height: 100vh;
+            }
+            .slide {
+                position: relative;
+                z-index: 1;
+                min-height: 100vh;
+                width: 100%;
+                scroll-snap-align: start;
+                display: flex;
+                flex-direction: column;
+                justify-content: center;
+                padding: 7rem 2.5vw 4rem;
+            }
+            .slide-inner {
+                max-width: 1360px;
+                margin: 0;
+                width: 100%;
+            }
 
-  /* The chip is now the slide's title; h1 is demoted to a subtitle beneath it */
-  .eyebrow {
-    display: inline-flex;
-    align-items: center;
-    gap: 0.55rem;
-    font-family: 'Geist';
-    font-size: clamp(1.15rem, 2vw, 1.6rem);
-    font-weight: 700;
-    letter-spacing: 0.01em;
-    color: var(--primary);
-    background: color-mix(in srgb, var(--primary) 14%, transparent);
-    border: 1px solid color-mix(in srgb, var(--primary) 32%, transparent);
-    padding: 0.6rem 1.2rem;
-    border-radius: 999px;
-    margin-bottom: 1.2rem;
-  }
-  .eyebrow svg { width: 1.15rem; height: 1.15rem; }
-  .slide h1 {
-    font-size: clamp(1.05rem, 1.5vw, 1.35rem);
-    font-weight: 600;
-    letter-spacing: -0.005em;
-    line-height: 1.35;
-    color: var(--muted-foreground);
-    margin: 0 0 1rem;
-    max-width: 62ch;
-  }
-  .slide .lead {
-    font-size: clamp(1rem, 1.3vw, 1.2rem);
-    color: var(--muted-foreground);
-    max-width: 68ch;
-    line-height: 1.55;
-    margin: 0 0 2rem;
-  }
+            /* The chip is now the slide's title; h1 is demoted to a subtitle beneath it */
+            .eyebrow {
+                display: inline-flex;
+                align-items: center;
+                gap: 0.55rem;
+                font-family: "Geist";
+                font-size: clamp(1.15rem, 2vw, 1.6rem);
+                font-weight: 700;
+                letter-spacing: 0.01em;
+                color: var(--primary);
+                background: color-mix(in srgb, var(--primary) 14%, transparent);
+                border: 1px solid
+                    color-mix(in srgb, var(--primary) 32%, transparent);
+                padding: 0.6rem 1.2rem;
+                border-radius: 999px;
+                margin-bottom: 1.2rem;
+            }
+            .eyebrow svg {
+                width: 1.15rem;
+                height: 1.15rem;
+            }
+            .slide h1 {
+                font-size: clamp(1.05rem, 1.5vw, 1.35rem);
+                font-weight: 600;
+                letter-spacing: -0.005em;
+                line-height: 1.35;
+                color: var(--muted-foreground);
+                margin: 0 0 1rem;
+                max-width: 62ch;
+            }
+            .slide .lead {
+                font-size: clamp(1rem, 1.3vw, 1.2rem);
+                color: var(--muted-foreground);
+                max-width: 68ch;
+                line-height: 1.55;
+                margin: 0 0 2rem;
+            }
 
-  /* ---------- Card (mirrors app-mobile ui/card.tsx) ---------- */
-  .card {
-    background: color-mix(in srgb, var(--card) 70%, transparent);
-    border: 1px solid var(--border);
-    border-radius: var(--radius);
-    padding: 1.25rem 1.4rem;
-    display: flex; flex-direction: column; gap: 0.5rem;
-    font-size: 1.15rem;
-  }
-  .card-title {
-    display: flex; align-items: center; gap: 0.6rem;
-    font-weight: 600; font-size: 1.22em; margin: 0 0 0.7rem ;
-  }
-  .card-desc { color: var(--muted-foreground); font-size: 0.9em; line-height: 1.5; margin: 0; }
+            /* ---------- Card (mirrors app-mobile ui/card.tsx) ---------- */
+            .card {
+                background: color-mix(in srgb, var(--card) 70%, transparent);
+                border: 1px solid var(--border);
+                border-radius: var(--radius);
+                padding: 1.25rem 1.4rem;
+                display: flex;
+                flex-direction: column;
+                gap: 0.5rem;
+                font-size: 1.15rem;
+            }
+            .card-title {
+                display: flex;
+                align-items: center;
+                gap: 0.6rem;
+                font-weight: 600;
+                font-size: 1.22em;
+                margin: 0 0 0.7rem;
+            }
+            .card-desc {
+                color: var(--muted-foreground);
+                font-size: 0.9em;
+                line-height: 1.5;
+                margin: 0;
+            }
 
-  .icon-badge {
-    display: flex; align-items: center; justify-content: center;
-    height: 1.9rem; width: 1.9rem; flex-shrink: 0;
-    border-radius: 0.5rem;
-    background: color-mix(in srgb, var(--chart) 18%, transparent);
-    color: var(--chart);
-  }
-  .icon-badge svg { width: 1.05rem; height: 1.05rem; }
-  .icon-badge.lg { height: 2.75rem; width: 2.75rem; border-radius: 0.75rem; }
-  .icon-badge.lg svg { width: 1.4rem; height: 1.4rem; }
-  .icon-badge.digitwin-mark { background: var(--primary); color: var(--primary-foreground); }
-  .card-photo {
-    position: relative;
-    margin: -1.25rem -1.4rem 0.9rem;
-    border-radius: var(--radius) var(--radius) 0 0;
-    overflow: hidden;
-  }
-  .card-photo img { display: block; width: 100%; height: 11rem; object-fit: cover; }
+            .icon-badge {
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                height: 1.9rem;
+                width: 1.9rem;
+                flex-shrink: 0;
+                border-radius: 0.5rem;
+                background: color-mix(in srgb, var(--chart) 18%, transparent);
+                color: var(--chart);
+            }
+            .icon-badge svg {
+                width: 1.05rem;
+                height: 1.05rem;
+            }
+            .icon-badge.lg {
+                height: 2.75rem;
+                width: 2.75rem;
+                border-radius: 0.75rem;
+            }
+            .icon-badge.lg svg {
+                width: 1.4rem;
+                height: 1.4rem;
+            }
+            .icon-badge.digitwin-mark {
+                background: var(--primary);
+                color: var(--primary-foreground);
+            }
+            .card-photo {
+                position: relative;
+                margin: -1.25rem -1.4rem 0.9rem;
+                border-radius: var(--radius) var(--radius) 0 0;
+                overflow: hidden;
+            }
+            .card-photo img {
+                display: block;
+                width: 100%;
+                height: 11rem;
+                object-fit: cover;
+            }
 
-  .badge {
-    display: inline-flex; align-items: center; gap: 0.3rem;
-    border-radius: 0.5rem; padding: 0.2rem 0.55rem;
-    font-size: 0.72rem; font-weight: 500;
-    background: var(--secondary); color: var(--secondary-foreground);
-    border: 1px solid var(--border);
-  }
+            .badge {
+                display: inline-flex;
+                align-items: center;
+                gap: 0.3rem;
+                border-radius: 0.5rem;
+                padding: 0.2rem 0.55rem;
+                font-size: 0.72rem;
+                font-weight: 500;
+                background: var(--secondary);
+                color: var(--secondary-foreground);
+                border: 1px solid var(--border);
+            }
 
-  /* ---------- Stat grid (slide 2) ---------- */
-  .stat-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1rem; margin-bottom: 1.75rem; }
-  .stat-card { --chart: var(--chart-1); }
-  .stat-card .card-title { font-size: 1.22em; margin-bottom: 0.7rem; }
-  .stat-number {
-    font-size: clamp(1.5rem, 2.2vw, 2rem);
-    font-weight: 800; letter-spacing: -0.02em;
-    color: var(--foreground); margin: 0.6rem 0 0.3rem;
-  }
-  .stat-label { font-size: 0.82rem; color: var(--muted-foreground); line-height: 1.4; margin: 0; }
-  .stat-mini-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 0.6rem; margin: 0.2rem 0 0.85rem; }
-  .stat-mini {
-    display: flex; align-items: center; gap: 0.6rem;
-    background: var(--secondary); border: 1px solid var(--border);
-    border-radius: 0.6rem; padding: 0.65rem 0.7rem;
-  }
-  .stat-mini .stat-number { display: block; font-size: 1.3em; margin: 0; }
-  .stat-mini .stat-sub { display: block; font-size: 0.68em; color: var(--muted-foreground); }
+            /* ---------- Stat grid (slide 2) ---------- */
+            .stat-grid {
+                display: grid;
+                grid-template-columns: repeat(3, 1fr);
+                gap: 1rem;
+                margin-bottom: 1.75rem;
+            }
+            .stat-card {
+                --chart: var(--chart-1);
+            }
+            .stat-card .card-title {
+                font-size: 1.22em;
+                margin-bottom: 0.7rem;
+            }
+            .stat-number {
+                font-size: clamp(1.5rem, 2.2vw, 2rem);
+                font-weight: 800;
+                letter-spacing: -0.02em;
+                color: var(--foreground);
+                margin: 0.6rem 0 0.3rem;
+            }
+            .stat-label {
+                font-size: 0.82rem;
+                color: var(--muted-foreground);
+                line-height: 1.4;
+                margin: 0;
+            }
+            .stat-mini-grid {
+                display: grid;
+                grid-template-columns: 1fr 1fr;
+                gap: 0.6rem;
+                margin: 0.2rem 0 0.85rem;
+            }
+            .stat-mini {
+                display: flex;
+                align-items: center;
+                gap: 0.6rem;
+                background: var(--secondary);
+                border: 1px solid var(--border);
+                border-radius: 0.6rem;
+                padding: 0.65rem 0.7rem;
+            }
+            .stat-mini .stat-number {
+                display: block;
+                font-size: 1.3em;
+                margin: 0;
+            }
+            .stat-mini .stat-sub {
+                display: block;
+                font-size: 0.68em;
+                color: var(--muted-foreground);
+            }
 
-  /* ---------- Slide 2: imágenes verticales + ventajas/desventajas ---------- */
-  .context-layout { display: grid; grid-template-columns: 300px 1fr; gap: 1.75rem; align-items: stretch; }
-  .context-images { display: flex; flex-direction: column; gap: 1rem; }
-  .context-images .img-frame { flex: 1; min-height: 0; }
-  .context-images .img-frame img { width: 100%; height: 100%; object-fit: cover; display: block; }
-  .context-right { display: flex; flex-direction: column; gap: 1.6rem; }
-  .context-section { display: flex; flex-direction: column; gap: 0.9rem; }
-  .context-heading {
-    display: inline-flex; align-items: center; gap: 0.5rem; width: fit-content; margin: 0;
-    font-size: 1.1rem; font-weight: 700; letter-spacing: 0.01em;
-    padding: 0.32rem 0.9rem; border-radius: 999px;
-  }
-  .context-heading svg { width: 1.05rem; height: 1.05rem; }
-  .context-heading-pro {
-    color: var(--chart-1);
-    background: color-mix(in srgb, var(--chart-1) 14%, transparent);
-    border: 1px solid color-mix(in srgb, var(--chart-1) 30%, transparent);
-  }
-  .context-heading-con {
-    color: var(--chart-4);
-    background: color-mix(in srgb, var(--chart-4) 14%, transparent);
-    border: 1px solid color-mix(in srgb, var(--chart-4) 30%, transparent);
-  }
-  .context-layout .stat-grid { margin-bottom: 0; }
-  .problem-card { gap: 0.4rem; }
+            /* ---------- Slide 2: imágenes verticales + ventajas/desventajas ---------- */
+            #s2 .slide-inner {
+                max-width: 1720px;
+            }
+            .context-layout {
+                display: grid;
+                grid-template-columns: 450px 1fr;
+                gap: 1.75rem;
+                align-items: stretch;
+            }
+            .context-images {
+                display: flex;
+                flex-direction: column;
+                gap: 1rem;
+            }
+            .context-images .img-frame {
+                flex: 1;
+                min-height: 0;
+            }
+            .context-images .img-frame img {
+                width: 100%;
+                height: 100%;
+                object-fit: cover;
+                display: block;
+            }
+            .context-right {
+                display: grid;
+                grid-template-columns: 0.8fr 0.9fr;
+                gap: 1.75rem;
+                align-items: start;
+            }
+            .context-section {
+                display: flex;
+                flex-direction: column;
+                gap: 0.9rem;
+                height: 100%;
+            }
+            .context-heading {
+                display: inline-flex;
+                align-items: center;
+                gap: 0.5rem;
+                width: fit-content;
+                margin: 0;
+                font-size: 1.1rem;
+                font-weight: 700;
+                letter-spacing: 0.01em;
+                padding: 0.32rem 0.9rem;
+                border-radius: 999px;
+            }
+            .context-heading svg {
+                width: 1.05rem;
+                height: 1.05rem;
+            }
+            .context-heading-pro {
+                color: var(--chart-1);
+                background: color-mix(in srgb, var(--chart-1) 14%, transparent);
+                border: 1px solid
+                    color-mix(in srgb, var(--chart-1) 30%, transparent);
+            }
+            .context-heading-con {
+                color: var(--chart-4);
+                background: color-mix(in srgb, var(--chart-4) 14%, transparent);
+                border: 1px solid
+                    color-mix(in srgb, var(--chart-4) 30%, transparent);
+            }
+            .context-layout .stat-grid {
+                grid-template-columns: 1fr;
+                margin-bottom: 0;
+            }
+            .context-section .col-2 {
+                grid-template-columns: 1fr;
+                gap: 1rem;
+            }
+            .problem-card {
+                display: flex;
+                flex-direction: column;
+                gap: 0.85rem;
+            }
+            .problem-card .card-title {
+                margin-bottom: 0;
+            }
+            .problem-body {
+                display: grid;
+                grid-template-columns: 1fr;
+                gap: 1.5rem;
+                align-items: start;
+            }
+            .problem-card .bullet-list {
+                margin-top: 0;
+            }
 
-  .img-row { display: grid; grid-template-columns: 1.3fr 1fr; gap: 1rem; margin-bottom: 1.75rem; }
-  .img-frame {
-    border-radius: var(--radius);
-    overflow: hidden;
-    border: 1px solid var(--border);
-    background: var(--card);
-  }
-  .img-frame img { width: 100%; height: 100%; object-fit: cover; display: block; }
-  .img-row .img-frame:first-child img { aspect-ratio: 16/10; }
-  .img-row .img-frame:last-child img { aspect-ratio: 16/10; }
+            /* ---------- Slide 2: larger card type, homogeneous with the rest of the deck ---------- */
+            #s2 .card {
+                font-size: 1.32rem;
+            }
+            #s2 .stat-label {
+                font-size: 0.92rem;
+            }
+            #s2 .stat-mini .stat-sub {
+                font-size: 0.78em;
+            }
 
-  /* ---------- Two/three column layout ---------- */
-  .col-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 1.25rem; }
-  .col-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.25rem; }
+            .img-row {
+                display: grid;
+                grid-template-columns: 1.3fr 1fr;
+                gap: 1rem;
+                margin-bottom: 1.75rem;
+            }
+            .img-frame {
+                border-radius: var(--radius);
+                overflow: hidden;
+                border: 1px solid var(--border);
+                background: var(--card);
+            }
+            .img-frame img {
+                width: 100%;
+                height: 100%;
+                object-fit: cover;
+                display: block;
+            }
+            .img-row .img-frame:first-child img {
+                aspect-ratio: 16/10;
+            }
+            .img-row .img-frame:last-child img {
+                aspect-ratio: 16/10;
+            }
 
-  .bullet-list { list-style: none; margin: 0.75rem 0 0; padding: 0; display: flex; flex-direction: column; gap: 0.55rem; }
-  .bullet-list li {
-    display: flex; align-items: flex-start; gap: 0.55rem;
-    font-size: 0.86em; color: var(--card-foreground); line-height: 1.45;
-  }
-  .bullet-list .icon-badge { height: 1.5rem; width: 1.5rem; border-radius: 0.4rem; margin-top: 0.05rem; }
-  .bullet-list .icon-badge svg { width: 0.85rem; height: 0.85rem; }
-  .bullet-list-card {
-    border: 1px solid var(--border);
-    border-radius: 0.6rem;
-    padding: 0.85rem 1.1rem;
-    margin: 0.75rem auto 0;
-    width: fit-content;
-  }
-  .bullet-list-card .bullet-list { margin-top: 0; }
+            /* ---------- Two/three column layout ---------- */
+            .col-2 {
+                display: grid;
+                grid-template-columns: 1fr 1fr;
+                gap: 1.25rem;
+            }
+            .col-3 {
+                display: grid;
+                grid-template-columns: repeat(3, 1fr);
+                gap: 1.25rem;
+            }
 
-  .place-tag {
-    display: flex; align-items: center; gap: 0.5rem;
-    background: var(--secondary); border: 1px solid var(--border);
-    border-radius: 0.6rem; padding: 0.6rem 0.8rem; margin-top: 0.5rem;
-  }
-  .place-tag strong { font-size: 0.85rem; }
-  .place-tag span.desc { font-size: 0.78rem; color: var(--muted-foreground); }
+            .bullet-list {
+                list-style: none;
+                margin: 0.25rem 0 0;
+                padding: 0;
+                display: flex;
+                flex-direction: column;
+                gap: 0.55rem;
+            }
+            .bullet-list li {
+                display: flex;
+                align-items: flex-start;
+                gap: 0.55rem;
+                font-size: 0.86em;
+                color: var(--card-foreground);
+                line-height: 1.45;
+            }
+            .bullet-list .icon-badge {
+                height: 1.5rem;
+                width: 1.5rem;
+                border-radius: 0.4rem;
+                margin-top: 0.05rem;
+            }
+            .bullet-list .icon-badge svg {
+                width: 0.85rem;
+                height: 0.85rem;
+            }
+            .bullet-list-card {
+                border: 1px solid var(--border);
+                border-radius: 0.6rem;
+                padding: 0.85rem 1.1rem;
+                margin: 0.75rem auto 0;
+                width: fit-content;
+            }
+            .bullet-list-card .bullet-list {
+                margin-top: 0;
+            }
 
-  /* ---------- Slide 4: público objetivo en columnas de tarjetas ---------- */
-  .audience-col { display: flex; flex-direction: column; gap: 1rem; }
-  .audience-tag {
-    position: absolute; top: 0.7rem; left: 0.7rem; z-index: 1;
-    display: inline-flex; align-items: center; gap: 0.4rem;
-    font-size: 0.95rem; font-weight: 700; letter-spacing: 0.01em;
-    padding: 0.36rem 0.85rem; border-radius: 999px;
-    background: color-mix(in srgb, var(--background) 82%, transparent);
-    backdrop-filter: blur(6px);
-    border: 1px solid var(--border); color: var(--foreground);
-  }
-  .audience-tag svg { width: 1.05rem; height: 1.05rem; }
-  .subcard { flex-direction: row; align-items: center; gap: 0.75rem; padding: 0.85rem 1rem; }
-  .subcard strong { font-size: 1.12rem; }
-  .subcard .desc { font-size: 1rem; color: var(--muted-foreground); }
+            .place-tag {
+                display: flex;
+                align-items: center;
+                gap: 0.5rem;
+                background: var(--secondary);
+                border: 1px solid var(--border);
+                border-radius: 0.6rem;
+                padding: 0.6rem 0.8rem;
+                margin-top: 0.5rem;
+            }
+            .place-tag strong {
+                font-size: 0.85rem;
+            }
+            .place-tag span.desc {
+                font-size: 0.78rem;
+                color: var(--muted-foreground);
+            }
 
-  /* ---------- Slide 4: text+cycle in one left column, screenshots cascaded in the right column ---------- */
-  #s3 .slide-inner { max-width: 1480px; }
-  .s5-layout { display: grid; grid-template-columns: 0.75fr 1.5fr; gap: 1.5rem; align-items: start; }
-  .s5-left { display: flex; flex-direction: column; gap: 1.25rem; }
-  .s5-left .lead { margin-bottom: 0; }
-  .s5-right { display: flex; flex-direction: column; position: relative; left: 10.5rem; }
-  .s5-cascade { position: relative; width: 100%; padding-bottom: 20%; }
-  .s5-shot.primary { position: relative; left: 0; width: 60%; z-index: 1; }
-  .s5-shot.secondary {
-    position: absolute; right: 0; bottom: -6%; z-index: 2;
-    width: 60%;
-    border: 3px solid var(--background);
-    box-shadow: 0 16px 32px -14px rgba(0,0,0,0.35);
-  }
+            /* ---------- Slide 4: público objetivo en columnas de tarjetas ---------- */
+            .audience-grid {
+                display: flex;
+                flex-direction: column;
+                gap: 1.25rem;
+            }
+            .audience-main-row {
+                align-items: stretch;
+            }
+            .audience-main-row .card {
+                height: 100%;
+            }
+            .audience-col {
+                display: flex;
+                flex-direction: column;
+                gap: 1rem;
+            }
+            .audience-tag {
+                position: absolute;
+                top: 0.7rem;
+                left: 0.7rem;
+                z-index: 1;
+                display: inline-flex;
+                align-items: center;
+                gap: 0.4rem;
+                font-size: 0.95rem;
+                font-weight: 700;
+                letter-spacing: 0.01em;
+                padding: 0.36rem 0.85rem;
+                border-radius: 999px;
+                background: color-mix(
+                    in srgb,
+                    var(--background) 82%,
+                    transparent
+                );
+                backdrop-filter: blur(6px);
+                border: 1px solid var(--border);
+                color: var(--foreground);
+            }
+            .audience-tag svg {
+                width: 1.05rem;
+                height: 1.05rem;
+            }
+            .subcard-group-label {
+                align-self: flex-start;
+                display: inline-flex;
+                align-items: center;
+                gap: 0.4rem;
+                font-size: 0.95rem;
+                font-weight: 700;
+                letter-spacing: 0.01em;
+                padding: 0.36rem 0.85rem;
+                border-radius: 999px;
+                background: color-mix(
+                    in srgb,
+                    var(--background) 82%,
+                    transparent
+                );
+                border: 1px solid var(--border);
+                color: var(--foreground);
+                margin: 0.1rem 0 -0.35rem 0;
+            }
+            .subcard-group-label svg {
+                width: 1.05rem;
+                height: 1.05rem;
+            }
+            .subcard-group-label .flag-emoji {
+                font-size: 1.05rem;
+                line-height: 1;
+            }
+            .subcard {
+                flex-direction: row;
+                align-items: center;
+                gap: 0.75rem;
+                padding: 0.85rem 1rem;
+            }
+            .subcard strong {
+                font-size: 1.32rem;
+            }
+            .subcard .desc {
+                font-size: 1.15rem;
+                color: var(--muted-foreground);
+            }
+            .subcard .place-line {
+                white-space: nowrap;
+            }
 
-  /* ---------- Cycle (slide 5) — circular layout ---------- */
-  .cycle-circle {
-    position: relative;
-    width: clamp(360px, 36vw, 500px);
-    aspect-ratio: 1;
-    margin: 0.5rem auto 0;
-  }
-  .cycle-svg { position: absolute; inset: 0; width: 100%; height: 100%; overflow: visible; }
-  .cycle-node {
-    position: absolute;
-    transform: translate(-50%, -50%);
-    display: flex; flex-direction: column; align-items: center; gap: 0.5rem; text-align: center;
-    background: var(--card);
-    border: 1px solid var(--border); border-radius: var(--radius);
-    padding: 1rem 0.9rem; width: 9.6rem; z-index: 2;
-    box-shadow: 0 10px 28px -16px rgba(0,0,0,0.25);
-  }
-  .cycle-node .icon-badge.lg { height: 3.4rem; width: 3.4rem; }
-  .cycle-node .icon-badge.lg svg { width: 1.75rem; height: 1.75rem; }
-  .cycle-node-highlight {
-    background: color-mix(in srgb, var(--primary) 10%, var(--card));
-    border-color: color-mix(in srgb, var(--primary) 45%, var(--border));
-  }
-  .cycle-node span.label { font-weight: 600; font-size: 1.05rem; }
-  .cycle-node span.sub { font-size: 0.78rem; color: var(--muted-foreground); line-height: 1.3; }
-  .cycle-center {
-    position: absolute; left: 50%; top: 50%; transform: translate(-50%, -50%);
-    display: flex; flex-direction: column; align-items: center; gap: 0.3rem;
-    color: var(--muted-foreground); z-index: 1; text-align: center;
-  }
-  .cycle-center svg { width: 1.75rem; height: 1.75rem; color: var(--primary); }
-  .cycle-center span {
-    font-size: 0.78rem; font-weight: 600; text-transform: uppercase;
-    letter-spacing: 0.05em; max-width: 7rem;
-  }
+            /* ---------- Slide 4: text+cycle in one left column, screenshots cascaded in the right column ---------- */
+            #s3 .slide-inner {
+                max-width: 1480px;
+            }
+            .s5-layout {
+                display: grid;
+                grid-template-columns: 1.05fr 1.4fr;
+                gap: 1.5rem;
+                align-items: start;
+            }
+            .s5-left {
+                display: flex;
+                flex-direction: column;
+                gap: 1.75rem;
+                width: 100%;
+            }
+            .s5-left .lead {
+                margin-bottom: 50px;
+                max-width: none;
+            }
+            .s5-right {
+                display: flex;
+                flex-direction: column;
+                position: relative;
+                left: 7rem;
+            }
+            .s5-cascade {
+                position: relative;
+                width: 100%;
+                padding-bottom: 42%;
+            }
+            .s5-shot.primary {
+                position: relative;
+                left: 0;
+                width: 90%;
+                z-index: 1;
+            }
+            .s5-shot.secondary {
+                position: absolute;
+                right: -10rem;
+                bottom: -6%;
+                z-index: 2;
+                width: 90%;
+                border: 3px solid var(--background);
+                box-shadow: 0 16px 32px -14px rgba(0, 0, 0, 0.35);
+            }
 
-  /* "Inside a computer": browser-window chrome wrapping each screenshot */
-  .shot-frame {
-    border-radius: var(--radius);
-    overflow: hidden;
-    border: 1px solid var(--border);
-    background: var(--card);
-    box-shadow: 0 20px 50px -20px rgba(0,0,0,0.5);
-  }
-  .shot-frame-bar {
-    display: flex; align-items: center; gap: 0.5rem;
-    padding: 0.55rem 0.7rem;
-    background: var(--secondary);
-    border-bottom: 1px solid var(--border);
-  }
-  .shot-frame-bar .dot { width: 0.5rem; height: 0.5rem; border-radius: 999px; flex-shrink: 0; }
-  .shot-frame-bar .dot-red { background: #ff5f57; }
-  .shot-frame-bar .dot-yellow { background: #febc2e; }
-  .shot-frame-bar .dot-green { background: #28c840; }
-  .shot-frame-url {
-    flex: 1; text-align: center; margin-left: 0.4rem;
-    font-family: 'Geist Mono', monospace; font-size: 0.65rem; color: var(--muted-foreground);
-    background: var(--card); border: 1px solid var(--border); border-radius: 999px;
-    padding: 0.15rem 0.6rem;
-  }
-  /* both screenshots share config.png's native resolution/aspect ratio (1240×739) */
-  .shot-frame img { width: 100%; aspect-ratio: 1240 / 739; object-fit: cover; object-position: top; display: block; }
-  .shot-label {
-    position: relative; z-index: 3;
-    display: flex; align-items: center; gap: 0.4rem;
-    font-size: 0.75rem; color: var(--muted-foreground);
-    margin-top: 0.6rem; justify-content: center;
-  }
+            /* ---------- Cycle (slide 5) — circular layout ---------- */
+            .cycle-circle {
+                position: relative;
+                width: clamp(360px, 36vw, 500px);
+                aspect-ratio: 1;
+                margin: 1.1rem auto 0;
+            }
+            .cycle-svg {
+                position: absolute;
+                inset: 0;
+                width: 100%;
+                height: 100%;
+                overflow: visible;
+            }
+            .cycle-node {
+                position: absolute;
+                transform: translate(-50%, -50%);
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                gap: 0.5rem;
+                text-align: center;
+                background: var(--card);
+                border: 1px solid var(--border);
+                border-radius: var(--radius);
+                padding: 1.1rem 1rem;
+                width: 10.6rem;
+                z-index: 2;
+                box-shadow: 0 10px 28px -16px rgba(0, 0, 0, 0.25);
+            }
+            .cycle-node .icon-badge.lg {
+                height: 3.4rem;
+                width: 3.4rem;
+            }
+            .cycle-node .icon-badge.lg svg {
+                width: 1.75rem;
+                height: 1.75rem;
+            }
+            .cycle-node-highlight {
+                background: color-mix(in srgb, var(--primary) 10%, var(--card));
+                border-color: color-mix(
+                    in srgb,
+                    var(--primary) 45%,
+                    var(--border)
+                );
+            }
+            .cycle-node span.label {
+                font-weight: 600;
+                font-size: 1.25rem;
+            }
+            .cycle-node span.sub {
+                font-size: 0.95rem;
+                color: var(--muted-foreground);
+                line-height: 1.3;
+            }
+            .cycle-center {
+                position: absolute;
+                left: 50%;
+                top: 50%;
+                transform: translate(-50%, -50%);
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                gap: 0.3rem;
+                color: var(--muted-foreground);
+                z-index: 1;
+                text-align: center;
+            }
+            .cycle-center svg {
+                width: 1.75rem;
+                height: 1.75rem;
+                color: var(--primary);
+            }
+            .cycle-center span {
+                font-size: 0.92rem;
+                font-weight: 600;
+                text-transform: uppercase;
+                letter-spacing: 0.05em;
+                max-width: 7rem;
+            }
 
-  /* ---------- Stage timeline (slide 6) — exponential growth curve + 3 stages ---------- */
-  .timeline { margin-top: -3rem; }
-  #s5 .timeline .card,
-  #s5 .timeline .exchange-card,
-  #s5 .timeline .plan-card { font-size: 1.4rem; }
-  .timeline-curve { position: relative; height: 6.5rem; margin-bottom: 1rem; }
-  .timeline-curve-svg { position: absolute; inset: 0; width: 100%; height: 100%; overflow: visible; }
-  .timeline-dot {
-    position: absolute;
-    display: flex; align-items: center; justify-content: center;
-    width: 1.9rem; height: 1.9rem; border-radius: 999px;
-    background: var(--primary); color: var(--primary-foreground);
-    font-family: 'Geist Mono', monospace; font-weight: 700; font-size: 0.85rem;
-    box-shadow: 0 0 0 6px var(--background);
-    transform: translate(-50%, 50%);
-  }
-  .timeline-dot-challenge {
-    background: var(--background); color: var(--violet);
-    border: 2px solid var(--violet);
-  }
-  .timeline-cards { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.25rem; align-items: start; }
-  .timeline-cards > *:nth-child(1) { margin-top: 3.25rem; }
-  .timeline-cards > *:nth-child(2) { margin-top: 0.75rem; }
-  .timeline-cards > *:nth-child(3) { margin-top: -1.5rem; }
-  .timeline-col { display: flex; flex-direction: column; gap: 1rem; }
-  .stage-card { width: 100%; text-align: left; display: flex; flex-direction: column; gap: 0.6rem; }
-  .stage-card h3 { margin: 0; font-size: 1.18em; font-weight: 600; }
-  .stage-card p { margin: 0; font-size: 0.82em; color: var(--muted-foreground); line-height: 1.5; }
-  .stage-card-challenge {
-    border-style: dashed;
-    border-color: color-mix(in srgb, var(--chart-1) 45%, var(--border));
-    background: color-mix(in srgb, var(--chart-1) 6%, var(--card));
-  }
-  .stage-card-ally {
-    flex-direction: row; align-items: center; gap: 0.7rem;
-    padding: 0.7rem 0.9rem;
-  }
-  .stage-card-ally p { font-size: 0.78em; }
-  .stage-tag {
-    display: inline-flex; align-items: center; width: fit-content;
-    font-family: 'Geist Mono', monospace; font-size: 0.66em; font-weight: 700;
-    text-transform: uppercase; letter-spacing: 0.05em;
-    color: var(--chart); background: color-mix(in srgb, var(--chart) 14%, transparent);
-    border: 1px solid color-mix(in srgb, var(--chart) 30%, transparent);
-    padding: 0.2rem 0.55rem; border-radius: 999px;
-  }
-  .hint {
-    color: var(--chart-1)
-  }
-  .funding-tag {
-    display: inline-flex; align-items: center; gap: 0.35rem; width: fit-content;
-    font-size: 0.76em; font-weight: 600; color: var(--foreground);
-    background: color-mix(in srgb, var(--chart) 10%, transparent);
-    border: 1px solid color-mix(in srgb, var(--chart) 26%, transparent);
-    padding: 0.35rem 0.65rem; border-radius: 0.5rem;
-  }
-  .funding-tag svg { width: 0.85rem; height: 0.85rem; flex-shrink: 0; }
+            /* "Inside a computer": browser-window chrome wrapping each screenshot */
+            .shot-frame {
+                border-radius: var(--radius);
+                overflow: hidden;
+                border: 1px solid var(--border);
+                background: var(--card);
+                box-shadow: 0 20px 50px -20px rgba(0, 0, 0, 0.5);
+            }
+            .shot-frame-bar {
+                display: flex;
+                align-items: center;
+                gap: 0.5rem;
+                padding: 0.55rem 0.7rem;
+                background: var(--secondary);
+                border-bottom: 1px solid var(--border);
+            }
+            .shot-frame-bar .dot {
+                width: 0.5rem;
+                height: 0.5rem;
+                border-radius: 999px;
+                flex-shrink: 0;
+            }
+            .shot-frame-bar .dot-red {
+                background: #ff5f57;
+            }
+            .shot-frame-bar .dot-yellow {
+                background: #febc2e;
+            }
+            .shot-frame-bar .dot-green {
+                background: #28c840;
+            }
+            .shot-frame-url {
+                flex: 1;
+                text-align: center;
+                margin-left: 0.4rem;
+                font-family: "Geist Mono", monospace;
+                font-size: 0.65rem;
+                color: var(--muted-foreground);
+                background: var(--card);
+                border: 1px solid var(--border);
+                border-radius: 999px;
+                padding: 0.15rem 0.6rem;
+            }
+            /* both screenshots share config.png's native resolution/aspect ratio (1240×739) */
+            .shot-frame img {
+                width: 100%;
+                aspect-ratio: 1240 / 739;
+                object-fit: cover;
+                object-position: top;
+                display: block;
+            }
+            .shot-label {
+                position: relative;
+                z-index: 3;
+                display: flex;
+                align-items: center;
+                gap: 0.4rem;
+                font-size: 0.75rem;
+                color: var(--muted-foreground);
+                margin-top: 1.5rem;
+                justify-content: center;
+            }
 
-  /* Prueba Piloto: what growers receive (green) vs. what they give back (red), outside the stage card */
-  .exchange-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 0.6rem; }
-  .exchange-card {
-    background: var(--card);
-    border: 1px solid var(--border);
-    border-radius: 0.6rem; padding: 0.6rem 0.7rem;
-    display: flex; flex-direction: column; gap: 0.3rem;
-    font-size: 1.15rem;
-  }
-  .exchange-label {
-    display: inline-flex; align-items: center; gap: 0.35rem;
-    font-family: 'Geist Mono', monospace; font-size: 0.64em; font-weight: 700;
-    text-transform: uppercase; letter-spacing: 0.04em;
-    color: var(--chart);
-  }
-  .exchange-label svg { width: 0.75rem; height: 0.75rem; }
-  .exchange-card p { margin: 0; font-size: 0.78em; color: var(--card-foreground); line-height: 1.4; }
-  .exchange-direction {
-    display: inline-flex; align-items: center; gap: 0.3rem;
-    font-size: 0.68em; color: var(--muted-foreground);
-  }
-  .exchange-direction svg { width: 0.65rem; height: 0.65rem; flex-shrink: 0; }
-  .reward-list { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 0.3rem; }
-  .reward-list li { display: flex; align-items: center; gap: 0.35rem; font-size: 0.68em; color: var(--card-foreground); line-height: 1.4; }
-  .reward-list li::before { content: "•"; color: var(--muted-foreground); }
-  .reward-premium { display: inline-flex; align-items: center; gap: 0.3rem; font-weight: 700; color: var(--chart-3); }
-  .reward-premium svg { width: 0.95em; height: 0.95em; }
+            /* ---------- Stage timeline (slide 6) — exponential growth curve + 3 stages ---------- */
+            #s5 .slide-inner {
+                max-width: 1600px;
+                margin: 0 auto;
+            }
+            .timeline {
+                margin-top: -3rem;
+            }
+            #s5 .timeline .card,
+            #s5 .timeline .plan-card {
+                font-size: 1.4rem;
+            }
+            #s5 .timeline .exchange-card {
+                font-size: 1.6rem;
+                padding: 1rem 1.2rem;
+            }
+            .timeline-curve {
+                position: relative;
+                height: 6.5rem;
+                margin-bottom: 1rem;
+            }
+            .timeline-curve-svg {
+                position: absolute;
+                inset: 0;
+                width: 100%;
+                height: 100%;
+                overflow: visible;
+            }
+            .timeline-dot {
+                position: absolute;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                width: 1.9rem;
+                height: 1.9rem;
+                border-radius: 999px;
+                background: var(--primary);
+                color: var(--primary-foreground);
+                font-family: "Geist Mono", monospace;
+                font-weight: 700;
+                font-size: 0.85rem;
+                box-shadow: 0 0 0 6px var(--background);
+                transform: translate(-50%, 50%);
+            }
+            .timeline-dot-challenge {
+                background: var(--background);
+                color: var(--chart-1);
+                border: 2px solid var(--chart-1);
+            }
+            .timeline-cards {
+                display: grid;
+                grid-template-columns: repeat(3, 1fr);
+                gap: 1.25rem;
+                align-items: start;
+            }
+            .timeline-cards > *:nth-child(1) {
+                margin-top: 3.25rem;
+            }
+            .timeline-cards > *:nth-child(2) {
+                margin-top: 0.75rem;
+            }
+            .timeline-cards > *:nth-child(3) {
+                margin-top: -1.5rem;
+            }
+            .timeline-col {
+                display: flex;
+                flex-direction: column;
+                gap: 0.65rem;
+            }
+            .stage-card {
+                width: 100%;
+                text-align: left;
+                display: flex;
+                flex-direction: column;
+                gap: 0.6rem;
+            }
+            .stage-card h3 {
+                margin: 0;
+                font-size: 1.18em;
+                font-weight: 600;
+            }
+            .stage-card p {
+                margin: 0;
+                font-size: 0.82em;
+                color: var(--muted-foreground);
+                line-height: 1.5;
+            }
+            .stage-card-challenge {
+                border-style: dashed;
+                border-color: color-mix(
+                    in srgb,
+                    var(--chart-1) 45%,
+                    var(--border)
+                );
+                background: color-mix(in srgb, var(--chart-1) 6%, var(--card));
+            }
+            .stage-card-ally {
+                flex-direction: row;
+                align-items: center;
+                gap: 0.7rem;
+                padding: 0.7rem 0.9rem;
+            }
+            .stage-card-ally p {
+                font-size: 0.78em;
+            }
+            .stage-tag {
+                display: inline-flex;
+                align-items: center;
+                width: fit-content;
+                font-family: "Geist Mono", monospace;
+                font-size: 0.66em;
+                font-weight: 700;
+                text-transform: uppercase;
+                letter-spacing: 0.05em;
+                color: var(--chart);
+                background: color-mix(in srgb, var(--chart) 14%, transparent);
+                border: 1px solid
+                    color-mix(in srgb, var(--chart) 30%, transparent);
+                padding: 0.2rem 0.55rem;
+                border-radius: 999px;
+            }
+            .hint {
+                color: var(--chart-1);
+            }
+            .funding-tag {
+                display: inline-flex;
+                align-items: center;
+                gap: 0.35rem;
+                width: fit-content;
+                font-size: 0.76em;
+                font-weight: 600;
+                color: var(--foreground);
+                background: color-mix(in srgb, var(--chart) 10%, transparent);
+                border: 1px solid
+                    color-mix(in srgb, var(--chart) 26%, transparent);
+                padding: 0.35rem 0.65rem;
+                border-radius: 0.5rem;
+            }
+            .funding-tag svg {
+                width: 0.85rem;
+                height: 0.85rem;
+                flex-shrink: 0;
+            }
 
-  /* Lanzamiento: subscription plans pulled out as their own pricing-style cards, stacked below the stage card */
-  .plans-card .card-title { margin-bottom: 0.7rem; }
-  .plans-card .plan-card { background: var(--card); box-shadow: none; }
-  .plans-grid { display: flex; flex-direction: column; gap: 0.6rem; }
-  .plan-card {
-    background: var(--card); border: 1px solid var(--border); border-radius: 0.6rem;
-    padding: 0.6rem 0.8rem;
-    display: flex; align-items: baseline; justify-content: space-between; gap: 0.5rem;
-    box-shadow: 0 10px 24px -18px rgba(0,0,0,0.25);
-    font-size: 1.15rem;
-  }
-  .plan-name { display: inline-flex; align-items: center; gap: 0.3rem; font-weight: 700; font-size: 0.82em; flex-shrink: 0; }
-  .plan-name svg { width: 0.85rem; height: 0.85rem; color: var(--chart, var(--muted-foreground)); }
-  .plan-desc { margin: 0; font-size: 0.72em; color: var(--muted-foreground); line-height: 1.4; text-align: right; }
-  .plan-card-premium {
-    border-color: color-mix(in srgb, var(--chart-3) 45%, var(--border));
-  }
-  .plan-card-premium .plan-name { color: var(--chart-3); }
+            /* Prueba Piloto: what growers receive (green) vs. what they give back (red), outside the stage card */
+            .exchange-wrap {
+                display: flex;
+                flex-direction: column;
+                gap: 0.5rem;
+                padding: 0.9rem 1rem;
+            }
+            .exchange-wrap-title {
+                margin: 0;
+                font-family: "Geist Mono", monospace;
+                font-size: 0.78rem;
+                font-weight: 700;
+                text-transform: uppercase;
+                letter-spacing: 0.05em;
+                color: var(--muted-foreground);
+            }
+            .exchange-grid {
+                display: grid;
+                grid-template-columns: 1fr 1fr;
+                gap: 0.5rem;
+            }
+            .exchange-card {
+                background: var(--card);
+                border: 1px solid var(--border);
+                border-radius: 0.6rem;
+                padding: 0.75rem 0.85rem;
+                display: flex;
+                flex-direction: column;
+                gap: 0.4rem;
+                font-size: 1.4rem;
+            }
+            .exchange-label {
+                display: inline-flex;
+                align-items: center;
+                gap: 0.35rem;
+                font-family: "Geist Mono", monospace;
+                font-size: 0.64em;
+                font-weight: 700;
+                text-transform: uppercase;
+                letter-spacing: 0.04em;
+                color: var(--chart);
+            }
+            .exchange-label svg {
+                width: 0.75rem;
+                height: 0.75rem;
+            }
+            .exchange-card p {
+                margin: 0;
+                font-size: 0.78em;
+                color: var(--card-foreground);
+                line-height: 1.4;
+            }
+            .exchange-direction {
+                display: inline-flex;
+                align-items: center;
+                gap: 0.3rem;
+                font-size: 0.68em;
+                color: var(--muted-foreground);
+            }
+            .exchange-direction svg {
+                width: 0.65rem;
+                height: 0.65rem;
+                flex-shrink: 0;
+            }
+            .reward-list {
+                list-style: none;
+                margin: 0;
+                padding: 0;
+                display: flex;
+                flex-direction: column;
+                gap: 0.3rem;
+            }
+            .reward-list li {
+                display: flex;
+                align-items: center;
+                gap: 0.3rem;
+                font-size: 0.68em;
+                color: var(--card-foreground);
+                line-height: 1.4;
+            }
+            .reward-premium {
+                display: inline-flex;
+                align-items: center;
+                gap: 0.3rem;
+                font-weight: 700;
+                color: var(--chart-3);
+            }
+            .reward-premium svg {
+                width: 0.95em;
+                height: 0.95em;
+            }
 
-  /* ---------- Cover (slides 1 & 7) — always a dark photo hero, independent of theme ---------- */
-  .cover {
-    padding: 0; justify-content: center; align-items: center; text-align: center;
-    background:
-      linear-gradient(180deg, rgba(7,14,10,0.45) 0%, rgba(5,11,8,0.92) 88%),
-      url('img/cultivos-1.jpg') center/cover no-repeat;
-    color: oklch(0.97 0.01 145);
-  }
-  .cover .brand-mark { height: 4.5rem; width: 4.5rem; border-radius: 1.1rem; margin: 0 auto 1.5rem; box-shadow: 0 16px 40px -10px color-mix(in srgb, var(--primary) 60%, transparent); }
-  .cover .brand-mark svg { width: 2.5rem; height: 2.5rem; }
-  .cover h1 { font-size: clamp(2.6rem, 6vw, 4.5rem); margin: 0; color: inherit; }
-  .cover .tagline { font-size: clamp(1.05rem, 1.6vw, 1.4rem); color: oklch(0.85 0.02 145); margin: 1rem 0 2rem; max-width: 46ch; }
-  .cover .pillline { display: flex; gap: 0.8rem; flex-wrap: wrap; justify-content: center; }
-  .cover .badge {
-    background: rgba(255,255,255,0.1); color: oklch(0.97 0.01 145); border-color: rgba(255,255,255,0.22);
-    font-size: 1.05rem; gap: 0.5rem; padding: 0.5rem 1rem; border-radius: 0.7rem;
-  }
-  .cover .badge svg { width: 1.15rem !important; height: 1.15rem !important; }
+            /* Lanzamiento: subscription plans pulled out as their own pricing-style cards, stacked below the stage card */
+            .plans-card .card-title {
+                margin-bottom: 0.7rem;
+            }
+            .plans-card .plan-card {
+                background: var(--card);
+                box-shadow: none;
+            }
+            .plans-grid {
+                display: flex;
+                flex-direction: column;
+                gap: 0.6rem;
+            }
+            .plan-card {
+                background: var(--card);
+                border: 1px solid var(--border);
+                border-radius: 0.6rem;
+                padding: 0.6rem 0.8rem;
+                display: flex;
+                align-items: baseline;
+                justify-content: space-between;
+                gap: 0.5rem;
+                box-shadow: 0 10px 24px -18px rgba(0, 0, 0, 0.25);
+                font-size: 1.15rem;
+            }
+            .plan-name {
+                display: inline-flex;
+                align-items: center;
+                gap: 0.3rem;
+                font-weight: 700;
+                font-size: 0.82em;
+                flex-shrink: 0;
+            }
+            .plan-name svg {
+                width: 0.85rem;
+                height: 0.85rem;
+                color: var(--chart, var(--muted-foreground));
+            }
+            .plan-desc {
+                margin: 0;
+                font-size: 0.72em;
+                color: var(--muted-foreground);
+                line-height: 1.4;
+                text-align: right;
+            }
+            .plan-card-premium {
+                border-color: color-mix(
+                    in srgb,
+                    var(--chart-3) 45%,
+                    var(--border)
+                );
+            }
+            .plan-card-premium .plan-name {
+                color: var(--chart-3);
+            }
 
-  /* ---------- Closing slide (slide 7) contact block, scaled down within the cover style ---------- */
-  .cover-contact { display: flex; flex-direction: column; align-items: center; gap: 0.7rem; }
-  .cover-contact .contact-name { font-size: 1.25rem; font-weight: 600; color: oklch(0.95 0.01 145); margin: 0; }
-  .cover-contact .contact-row {
-    display: inline-flex; align-items: center; gap: 0.5rem;
-    background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.22);
-    color: oklch(0.95 0.01 145);
-    border-radius: 999px; padding: 0.45rem 1rem; font-size: 1rem;
-  }
-  .cover-contact .contact-row svg { width: 1.1rem; height: 1.1rem; flex-shrink: 0; }
+            /* ---------- Cover (slides 1 & 7) — always a dark photo hero, independent of theme ---------- */
+            .cover {
+                padding: 0;
+                justify-content: center;
+                align-items: center;
+                text-align: center;
+                background:
+                    linear-gradient(
+                        180deg,
+                        rgba(7, 14, 10, 0.45) 0%,
+                        rgba(5, 11, 8, 0.92) 88%
+                    ),
+                    url("img/cultivos-1.jpg") center/cover no-repeat;
+                color: oklch(0.97 0.01 145);
+            }
+            .cover .brand-mark {
+                height: 4.5rem;
+                width: 4.5rem;
+                border-radius: 1.1rem;
+                margin: 0 auto 1.5rem;
+                box-shadow: 0 16px 40px -10px
+                    color-mix(in srgb, var(--primary) 60%, transparent);
+            }
+            .cover .brand-mark svg {
+                width: 2.5rem;
+                height: 2.5rem;
+            }
+            .cover h1 {
+                font-size: clamp(2.6rem, 6vw, 4.5rem);
+                margin: 0;
+                color: inherit;
+            }
+            .cover .tagline {
+                font-size: clamp(2rem, 1.6vw, 1.4rem);
+                color: oklch(0.85 0.02 145);
+                margin: 1rem 0 2rem;
+                max-width: 46ch;
+            }
+            .cover .pillline {
+                display: flex;
+                gap: 0.8rem;
+                flex-wrap: wrap;
+                justify-content: center;
+            }
+            .cover .badge {
+                background: rgba(255, 255, 255, 0.1);
+                color: oklch(0.97 0.01 145);
+                border-color: rgba(255, 255, 255, 0.22);
+                font-size: 1.05rem;
+                gap: 0.5rem;
+                padding: 0.5rem 1rem;
+                border-radius: 0.7rem;
+            }
+            .cover .badge svg {
+                width: 1.15rem !important;
+                height: 1.15rem !important;
+            }
 
-  /* ---------- Dot nav ---------- */
-  .dotnav {
-    position: fixed; right: 1.5rem; top: 50%; transform: translateY(-50%);
-    z-index: 50; display: flex; flex-direction: column; gap: 0.65rem;
-  }
-  .dotnav a {
-    width: 0.55rem; height: 0.55rem; border-radius: 999px;
-    background: var(--border); display: block; transition: background 0.2s, transform 0.2s;
-  }
-  .dotnav a.active { background: var(--primary); transform: scale(1.35); }
+            /* ---------- Closing slide (slide 7) contact block, scaled down within the cover style ---------- */
+            .cover-contact {
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                gap: 0.7rem;
+            }
+            .cover-contact .contact-name {
+                font-size: 1.25rem;
+                font-weight: 600;
+                color: oklch(0.95 0.01 145);
+                margin: 0;
+            }
+            .cover-contact .contact-row {
+                display: inline-flex;
+                align-items: center;
+                gap: 0.5rem;
+                background: rgba(255, 255, 255, 0.1);
+                border: 1px solid rgba(255, 255, 255, 0.22);
+                color: oklch(0.95 0.01 145);
+                border-radius: 999px;
+                padding: 0.45rem 1rem;
+                font-size: 1rem;
+            }
+            .cover-contact .contact-row svg {
+                width: 1.1rem;
+                height: 1.1rem;
+                flex-shrink: 0;
+            }
 
-  /* ---------- Slides 3 & 5: icon above the title, bigger, larger type ---------- */
-  #s4 .card-title {
-    flex-direction: column; align-items: center; text-align: center;
-    font-size: 1.22em; gap: 0.9rem; margin-bottom: 0.8rem;
-  }
-  #s4 .card-desc { font-size: 1em; }
-  #s4 .bullet-list li { font-size: 1em; }
-  #s4 .icon-badge.lg { height: 3.6rem; width: 3.6rem; }
-  #s4 .icon-badge.lg svg { width: 1.9rem; height: 1.9rem; }
-  #s4 .icon-badge.xlg { height: 6.5rem; width: 6.5rem; }
-  #s4 .icon-badge.xlg svg { width: 4.25rem; height: 4.25rem; }
-  #s4 .place-tag strong { font-size: 0.95rem; }
-  #s4 .place-tag span.desc { font-size: 0.85rem; }
+            /* ---------- Dot nav ---------- */
+            .dotnav {
+                position: fixed;
+                right: 1.5rem;
+                top: 50%;
+                transform: translateY(-50%);
+                z-index: 50;
+                display: flex;
+                flex-direction: column;
+                gap: 0.65rem;
+            }
+            .dotnav a {
+                width: 0.55rem;
+                height: 0.55rem;
+                border-radius: 999px;
+                background: var(--border);
+                display: block;
+                transition:
+                    background 0.2s,
+                    transform 0.2s;
+            }
+            .dotnav a.active {
+                background: var(--primary);
+                transform: scale(1.35);
+            }
 
-  @media (max-width: 880px) {
-    .stat-grid, .col-2, .col-3, .img-row, .timeline-cards, .s5-layout, .stat-mini-grid, .context-layout { grid-template-columns: 1fr; }
-    .timeline-curve { display: none; }
-    .dotnav { display: none; }
-  }
+            /* ---------- Slides 3 & 5: icon above the title, bigger, larger type ---------- */
+            #s4 .slide-inner {
+                margin: 0 auto;
+            }
+            #s4 .card-title {
+                flex-direction: column;
+                align-items: center;
+                text-align: center;
+                font-size: 1.22em;
+                gap: 0.9rem;
+                margin-bottom: 0.8rem;
+            }
+            #s4 .card-desc {
+                font-size: 1em;
+            }
+            #s4 .bullet-list li {
+                font-size: 1em;
+            }
+            #s4 .icon-badge.lg {
+                height: 3.6rem;
+                width: 3.6rem;
+            }
+            #s4 .icon-badge.lg svg {
+                width: 1.9rem;
+                height: 1.9rem;
+            }
+            #s4 .icon-badge.xlg {
+                height: 6.5rem;
+                width: 6.5rem;
+            }
+            #s4 .icon-badge.xlg svg {
+                width: 4.25rem;
+                height: 4.25rem;
+            }
+            #s4 .place-tag strong {
+                font-size: 0.95rem;
+            }
+            #s4 .place-tag span.desc {
+                font-size: 0.85rem;
+            }
 
-  @media print {
-    body::before { display: none; }
-    .topbar, .dotnav { position: static; }
-    .deck { height: auto; overflow: visible; }
-    .slide { min-height: 100vh; page-break-after: always; scroll-snap-align: unset; }
-    html { scroll-behavior: auto; }
-  }
-</style>
-</head>
-<body>
+            @media (max-width: 880px) {
+                .stat-grid,
+                .col-2,
+                .col-3,
+                .img-row,
+                .timeline-cards,
+                .s5-layout,
+                .stat-mini-grid,
+                .context-layout {
+                    grid-template-columns: 1fr;
+                }
+                .timeline-curve {
+                    display: none;
+                }
+                .dotnav {
+                    display: none;
+                }
+            }
 
-  <header class="topbar">
-    <div class="brand">
-      <div class="brand-mark"><i data-lucide="sprout"></i></div>
-      <span class="brand-name">DigiTwin</span>
-    </div>
-    <span class="slide-counter" id="counter">01 / 06</span>
-  </header>
+            @media print {
+                body::before {
+                    display: none;
+                }
+                .topbar,
+                .dotnav {
+                    position: static;
+                }
+                .deck {
+                    height: auto;
+                    overflow: visible;
+                }
+                .slide {
+                    min-height: 100vh;
+                    page-break-after: always;
+                    scroll-snap-align: unset;
+                }
+                html {
+                    scroll-behavior: auto;
+                }
+            }
+        </style>
+    </head>
+    <body>
+        <header class="topbar">
+            <div class="brand">
+                <div class="brand-mark"><i data-lucide="sprout"></i></div>
+                <span class="brand-name">DigiTwin</span>
+            </div>
+            <span class="slide-counter" id="counter">01 / 06</span>
+        </header>
 
-  <nav class="dotnav" id="dotnav">
-    <a href="#s1" class="active" data-i="1"></a>
-    <a href="#s2" data-i="2"></a>
-    <a href="#s3" data-i="3"></a>
-    <a href="#s4" data-i="4"></a>
-    <a href="#s5" data-i="5"></a>
-    <a href="#s6" data-i="6"></a>
-  </nav>
+        <nav class="dotnav" id="dotnav">
+            <a href="#s1" class="active" data-i="1"></a>
+            <a href="#s2" data-i="2"></a>
+            <a href="#s3" data-i="3"></a>
+            <a href="#s4" data-i="4"></a>
+            <a href="#s5" data-i="5"></a>
+            <a href="#s6" data-i="6"></a>
+        </nav>
 
-  <main class="deck" id="deck">
+        <main class="deck" id="deck">
+            <!-- 1. COVER -->
+            <section class="slide cover" id="s1">
+                <div class="brand-mark"><i data-lucide="sprout"></i></div>
+                <h1>DigiTwin</h1>
+                <p class="tagline">
+                    Gemelo digital para cultivos hidropónicos. Medí, simulá y
+                    mejorá la producción antes de plantar.
+                </p>
+                <div class="pillline">
+                    <span class="badge"
+                        ><i
+                            data-lucide="droplets"
+                            style="width: 0.8rem; height: 0.8rem"
+                        ></i>
+                        Hidroponía</span
+                    >
+                    <span class="badge"
+                        ><i
+                            data-lucide="bar-chart-3"
+                            style="width: 0.8rem; height: 0.8rem"
+                        ></i>
+                        Simulación PCSE/WOFOST</span
+                    >
+                    <span class="badge"
+                        ><i
+                            data-lucide="leaf"
+                            style="width: 0.8rem; height: 0.8rem"
+                        ></i>
+                        Sustentable</span
+                    >
+                </div>
+                <div class="cover-contact" style="margin-top: 2rem">
+                    <span class="contact-name">Martín González Prieto</span>
+                    <span class="contact-row">
+                        <svg
+                            viewBox="0 0 24 24"
+                            fill="currentColor"
+                            aria-hidden="true"
+                        >
+                            <path
+                                d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 1 1 0-4.124 2.062 2.062 0 0 1 0 4.124zM7.114 20.452H3.558V9h3.556v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"
+                            />
+                        </svg>
+                        mgonpri
+                    </span>
+                </div>
+            </section>
 
-    <!-- 1. COVER -->
-    <section class="slide cover" id="s1">
-      <div class="brand-mark"><i data-lucide="sprout"></i></div>
-      <h1>DigiTwin</h1>
-      <p class="tagline">Gemelo digital para cultivos hidropónicos. Medí, simulá y mejorá la producción antes de plantar.</p>
-      <div class="pillline">
-        <span class="badge"><i data-lucide="droplets" style="width:0.8rem;height:0.8rem"></i> Hidroponía</span>
-        <span class="badge"><i data-lucide="bar-chart-3" style="width:0.8rem;height:0.8rem"></i> Simulación PCSE/WOFOST</span>
-        <span class="badge"><i data-lucide="leaf" style="width:0.8rem;height:0.8rem"></i> Sustentable</span>
-      </div>
-      <div class="cover-contact" style="margin-top:2rem;">
-        <span class="contact-name">Martín González Prieto</span>
-        <span class="contact-row">
-          <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 1 1 0-4.124 2.062 2.062 0 0 1 0 4.124zM7.114 20.452H3.558V9h3.556v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>
-          mgonpri
-        </span>
-      </div>
-    </section>
+            <!-- 2. CONTEXTO: ventajas y desventajas -->
+            <section class="slide" id="s2">
+                <div class="slide-inner">
+                    <span class="eyebrow"
+                        ><i data-lucide="sprout"></i>¿Qué son los cultivos
+                        hidropónicos?</span
+                    >
+                    <p class="lead">
+                        Una nueva solución con <b>gran potencial futuro</b>:
+                        sistemas de producción agrícola sin suelo, donde las
+                        raíces se nutren directamente de una solución de agua y
+                        nutrientes.
+                    </p>
 
-    <!-- 2. CONTEXTO: ventajas y desventajas -->
-    <section class="slide" id="s2">
-      <div class="slide-inner">
-        <span class="eyebrow"><i data-lucide="sprout"></i>¿Qué son los cultivos hidropónicos?</span>
-        <p class="lead">Una nueva solución con <b>gran potencial futuro</b>: sistemas de producción agrícola sin suelo, donde las raíces se nutren directamente de una solución de agua y nutrientes.</p>
+                    <div class="context-layout">
+                        <div class="context-images">
+                            <div class="img-frame">
+                                <img
+                                    src="img/cultivos-1.jpg"
+                                    alt="Cultivo hidropónico en invernadero"
+                                />
+                            </div>
+                            <div class="img-frame">
+                                <img
+                                    src="img/cultivos-2.jpg"
+                                    alt="Detalle de cultivo hidropónico"
+                                />
+                            </div>
+                        </div>
 
-        <div class="context-layout">
-          <div class="context-images">
-            <div class="img-frame"><img src="img/cultivos-1.jpg" alt="Cultivo hidropónico en invernadero" /></div>
-            <div class="img-frame"><img src="img/cultivos-2.jpg" alt="Detalle de cultivo hidropónico" /></div>
-          </div>
+                        <div class="context-right">
+                            <div class="context-section">
+                                <h2 class="context-heading context-heading-pro">
+                                    <i data-lucide="circle-check-big"></i>
+                                    Ventajas
+                                </h2>
+                                <div class="stat-grid">
+                                    <div
+                                        class="card stat-card"
+                                        style="--chart: var(--chart-2)"
+                                    >
+                                        <div class="card-title">
+                                            <div class="icon-badge">
+                                                <i data-lucide="gauge"></i>
+                                            </div>
+                                            Eficiencia
+                                        </div>
+                                        <div class="stat-mini-grid">
+                                            <div class="stat-mini">
+                                                <div
+                                                    class="icon-badge"
+                                                    style="
+                                                        --chart: var(--chart-2);
+                                                    "
+                                                >
+                                                    <i
+                                                        data-lucide="droplets"
+                                                    ></i>
+                                                </div>
+                                                <div>
+                                                    <span class="stat-number"
+                                                        >−90%</span
+                                                    ><span class="stat-sub"
+                                                        >agua</span
+                                                    >
+                                                </div>
+                                            </div>
+                                            <div class="stat-mini">
+                                                <div
+                                                    class="icon-badge"
+                                                    style="
+                                                        --chart: var(--chart-1);
+                                                    "
+                                                >
+                                                    <i
+                                                        data-lucide="layout-grid"
+                                                    ></i>
+                                                </div>
+                                                <div>
+                                                    <span class="stat-number"
+                                                        >3–10×</span
+                                                    ><span class="stat-sub"
+                                                        >espacio</span
+                                                    >
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div
+                                        class="card stat-card"
+                                        style="--chart: var(--chart-3)"
+                                    >
+                                        <div class="card-title">
+                                            <div class="icon-badge">
+                                                <i data-lucide="leaf"></i>
+                                            </div>
+                                            Sustentabilidad
+                                        </div>
+                                        <ul class="bullet-list">
+                                            <li>
+                                                <div
+                                                    class="icon-badge"
+                                                    style="
+                                                        --chart: var(--chart-3);
+                                                    "
+                                                >
+                                                    <i
+                                                        data-lucide="flask-conical"
+                                                    ></i>
+                                                </div>
+                                                Evita pesticidas y agroquímicos
+                                            </li>
+                                            <li>
+                                                <div
+                                                    class="icon-badge"
+                                                    style="
+                                                        --chart: var(--chart-3);
+                                                    "
+                                                >
+                                                    <i
+                                                        data-lucide="droplets"
+                                                    ></i>
+                                                </div>
+                                                Contamina menos el agua
+                                            </li>
+                                        </ul>
+                                    </div>
+                                    <div
+                                        class="card stat-card"
+                                        style="--chart: var(--chart-5)"
+                                    >
+                                        <div class="card-title">
+                                            <div class="icon-badge">
+                                                <i data-lucide="globe"></i>
+                                            </div>
+                                            Universalidad
+                                        </div>
+                                        <ul class="bullet-list">
+                                            <li>
+                                                <div
+                                                    class="icon-badge"
+                                                    style="
+                                                        --chart: var(--chart-5);
+                                                    "
+                                                >
+                                                    <i
+                                                        data-lucide="building-2"
+                                                    ></i>
+                                                </div>
+                                                Zonas urbanas o poco fértiles
+                                            </li>
+                                            <li>
+                                                <div
+                                                    class="icon-badge"
+                                                    style="
+                                                        --chart: var(--chart-5);
+                                                    "
+                                                >
+                                                    <i data-lucide="layers"></i>
+                                                </div>
+                                                Homogeneización de los cultivos
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
 
-          <div class="context-right">
-            <div class="context-section">
-              <h2 class="context-heading context-heading-pro"><i data-lucide="circle-check-big"></i> Ventajas</h2>
-              <div class="stat-grid">
-                <div class="card stat-card" style="--chart: var(--chart-2)">
-                  <div class="card-title"><div class="icon-badge"><i data-lucide="gauge"></i></div> Eficiencia</div>
-                  <div class="stat-mini-grid">
-                    <div class="stat-mini">
-                      <div class="icon-badge" style="--chart: var(--chart-2)"><i data-lucide="droplets"></i></div>
-                      <div><span class="stat-number">−90%</span><span class="stat-sub">agua</span></div>
+                            <div class="context-section">
+                                <h2 class="context-heading context-heading-con">
+                                    <i data-lucide="alert-triangle"></i>
+                                    Desventajas
+                                </h2>
+                                <div class="col-2">
+                                    <div class="card problem-card">
+                                        <div class="card-title">
+                                            <div
+                                                class="icon-badge"
+                                                style="--chart: var(--chart-4)"
+                                            >
+                                                <i data-lucide="banknote"></i>
+                                            </div>
+                                            Gran inversión inicial
+                                        </div>
+                                        <div class="problem-body">
+                                            <p class="card-desc">
+                                                Equipar un sistema funcional
+                                                exige
+                                                <b
+                                                    >componentes
+                                                    especializados</b
+                                                >
+                                                desde el primer día.
+                                            </p>
+                                            <ul class="bullet-list">
+                                                <li>
+                                                    <div
+                                                        class="icon-badge"
+                                                        style="
+                                                            --chart: var(
+                                                                --chart-4
+                                                            );
+                                                        "
+                                                    >
+                                                        <i
+                                                            data-lucide="gauge"
+                                                        ></i>
+                                                    </div>
+                                                    Medidores de conductividad y pH
+                                                </li>
+                                                <li>
+                                                    <div
+                                                        class="icon-badge"
+                                                        style="
+                                                            --chart: var(
+                                                                --chart-4
+                                                            );
+                                                        "
+                                                    >
+                                                        <i
+                                                            data-lucide="lightbulb"
+                                                        ></i>
+                                                    </div>
+                                                    Sistemas de iluminación
+                                                </li>
+                                                <li>
+                                                    <div
+                                                        class="icon-badge"
+                                                        style="
+                                                            --chart: var(
+                                                                --chart-4
+                                                            );
+                                                        "
+                                                    >
+                                                        <i
+                                                            data-lucide="wind"
+                                                        ></i>
+                                                    </div>
+                                                    Control del aire
+                                                </li>
+                                            </ul>
+                                        </div>
+                                    </div>
+
+                                    <div class="card problem-card">
+                                        <div class="card-title">
+                                            <div
+                                                class="icon-badge"
+                                                style="--chart: var(--chart-3)"
+                                            >
+                                                <i data-lucide="wrench"></i>
+                                            </div>
+                                            Mantenimiento y personal
+                                            calificado
+                                        </div>
+                                        <div class="problem-body">
+                                            <p class="card-desc">
+                                                Mantener el sistema equilibrado
+                                                exige
+                                                <b
+                                                    >conocimiento técnico
+                                                    constante</b
+                                                >: cualquier desvío impacta el
+                                                rendimiento.
+                                            </p>
+                                            <ul class="bullet-list">
+                                                <li>
+                                                    <div
+                                                        class="icon-badge"
+                                                        style="
+                                                            --chart: var(
+                                                                --chart-3
+                                                            );
+                                                        "
+                                                    >
+                                                        <i
+                                                            data-lucide="wrench"
+                                                        ></i>
+                                                    </div>
+                                                    Ajustes frecuentes para
+                                                    equilibrar el sistema
+                                                </li>
+                                                <li>
+                                                    <div
+                                                        class="icon-badge"
+                                                        style="
+                                                            --chart: var(
+                                                                --chart-3
+                                                            );
+                                                        "
+                                                    >
+                                                        <i
+                                                            data-lucide="brain"
+                                                        ></i>
+                                                    </div>
+                                                    Curva de aprendizaje
+                                                    pronunciada para nuevos
+                                                    productores
+                                                </li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                     </div>
-                    <div class="stat-mini">
-                      <div class="icon-badge" style="--chart: var(--chart-1)"><i data-lucide="layout-grid"></i></div>
-                      <div><span class="stat-number">3–10×</span><span class="stat-sub">espacio</span></div>
+                </div>
+            </section>
+
+            <!-- 3. NUESTRO PRODUCTO -->
+            <section class="slide" id="s3">
+                <div class="slide-inner">
+                    <div class="s5-layout">
+                        <div class="s5-left">
+                            <div>
+                                <span class="eyebrow"
+                                    ><i data-lucide="sprout"></i> ¿Cómo lo
+                                    resolvemos?</span
+                                >
+                                <p class="lead">
+                                    <b class="hint">DigiTwin</b> es una
+                                    plataforma de <b>gemelos digitales</b> que
+                                    <b class="hint">simula</b> el crecimiento de
+                                    cultivos hidropónicos antes y durante la
+                                    producción, dando solución a los
+                                    <b
+                                        >problemas de inversión y conocimiento
+                                        técnico</b
+                                    >, y poniendo en valor cada decisión del
+                                    cultivo.
+                                </p>
+                            </div>
+
+                            <div class="cycle-circle">
+                                <svg class="cycle-svg" viewBox="0 0 440 440">
+                                    <defs>
+                                        <marker
+                                            id="cycleArrow"
+                                            viewBox="0 0 10 10"
+                                            refX="7"
+                                            refY="5"
+                                            markerWidth="6"
+                                            markerHeight="6"
+                                            orient="auto-start-reverse"
+                                        >
+                                            <path
+                                                d="M0,0 L10,5 L0,10 z"
+                                                fill="var(--primary)"
+                                            />
+                                        </marker>
+                                    </defs>
+                                    <path
+                                        d="M220,50 A170,170 0 0 1 367,305"
+                                        fill="none"
+                                        stroke="var(--primary)"
+                                        stroke-width="2.5"
+                                        marker-end="url(#cycleArrow)"
+                                    />
+                                    <path
+                                        d="M367,305 A170,170 0 0 1 73,305"
+                                        fill="none"
+                                        stroke="var(--primary)"
+                                        stroke-width="2.5"
+                                        marker-end="url(#cycleArrow)"
+                                    />
+                                    <path
+                                        d="M73,305 A170,170 0 0 1 220,50"
+                                        fill="none"
+                                        stroke="var(--primary)"
+                                        stroke-width="2.5"
+                                        marker-end="url(#cycleArrow)"
+                                    />
+                                </svg>
+
+                                <div class="cycle-center">
+                                    <i data-lucide="refresh-cw"></i>
+                                    <span>Ciclo continuo</span>
+                                </div>
+
+                                <div
+                                    class="cycle-node"
+                                    style="left: 50%; top: 11.4%"
+                                >
+                                    <div
+                                        class="icon-badge lg"
+                                        style="--chart: var(--chart-2)"
+                                    >
+                                        <i data-lucide="clipboard-list"></i>
+                                    </div>
+                                    <span class="label">Medir</span>
+                                    <span class="sub">Datos del cultivo</span>
+                                </div>
+                                <div
+                                    class="cycle-node cycle-node-highlight"
+                                    style="left: 83.4%; top: 69.3%"
+                                >
+                                    <div class="icon-badge lg digitwin-mark">
+                                        <i data-lucide="sprout"></i>
+                                    </div>
+                                    <span class="label">Simular</span>
+                                    <span class="sub"
+                                        >DigiTwin (PCSE/WOFOST)</span
+                                    >
+                                </div>
+                                <div
+                                    class="cycle-node"
+                                    style="left: 16.6%; top: 69.3%"
+                                >
+                                    <div
+                                        class="icon-badge lg"
+                                        style="--chart: var(--chart-3)"
+                                    >
+                                        <i data-lucide="trending-up"></i>
+                                    </div>
+                                    <span class="label">Mejorar</span>
+                                    <span class="sub"
+                                        >Decisiones de cultivo</span
+                                    >
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="s5-right">
+                            <div class="s5-cascade">
+                                <div class="shot-frame s5-shot primary">
+                                    <div class="shot-frame-bar">
+                                        <span class="dot dot-red"></span
+                                        ><span class="dot dot-yellow"></span
+                                        ><span class="dot dot-green"></span>
+                                        <span class="shot-frame-url"
+                                            >digitwin.app/config</span
+                                        >
+                                    </div>
+                                    <img
+                                        src="img/config.png"
+                                        alt="Configuración de una simulación en DigiTwin"
+                                    />
+                                </div>
+                                <div class="shot-frame s5-shot secondary">
+                                    <div class="shot-frame-bar">
+                                        <span class="dot dot-red"></span
+                                        ><span class="dot dot-yellow"></span
+                                        ><span class="dot dot-green"></span>
+                                        <span class="shot-frame-url"
+                                            >digitwin.app/resultados</span
+                                        >
+                                    </div>
+                                    <img
+                                        src="img/results.png"
+                                        alt="Resultados de una simulación en DigiTwin"
+                                    />
+                                </div>
+                            </div>
+                        </div>
                     </div>
-                  </div>
                 </div>
-                <div class="card stat-card" style="--chart: var(--chart-3)">
-                  <div class="card-title"><div class="icon-badge"><i data-lucide="leaf"></i></div> Sustentabilidad</div>
-                  <ul class="bullet-list">
-                    <li><div class="icon-badge" style="--chart: var(--chart-3)"><i data-lucide="flask-conical"></i></div> Evita pesticidas y agroquímicos</li>
-                    <li><div class="icon-badge" style="--chart: var(--chart-3)"><i data-lucide="droplets"></i></div> Contamina menos el agua</li>
-                  </ul>
+            </section>
+
+            <!-- 4. OPORTUNIDAD -->
+            <section class="slide" id="s4">
+                <div class="slide-inner">
+                    <span class="eyebrow"
+                        ><i data-lucide="target"></i> Publico objetivo</span
+                    >
+                    <h1>
+                        Dos tipos de clientes listos para adoptar hidroponía
+                        inteligente
+                    </h1>
+
+                    <div class="audience-grid">
+                        <div class="col-2 audience-main-row">
+                            <div class="card">
+                                <div class="card-photo">
+                                    <img
+                                        src="img/zonas-marginales.jpg"
+                                        alt="Productores agrícolas locales en zonas extremas"
+                                    />
+                                </div>
+                                <div class="card-title">
+                                    Productores agrícolas en zonas extremas
+                                </div>
+                                <p class="card-desc">
+                                    Maximiza recursos en lugares con dificultad
+                                    para cultivar de forma convencional producto
+                                    de sus <b>condiciones climáticas</b> o
+                                    producto del <b>uso intensivo del suelo</b>.
+                                </p>
+                            </div>
+
+                            <div class="card">
+                                <div class="card-photo">
+                                    <img
+                                        src="img/huerto-urbano.jpg"
+                                        alt="Pequeños agricultores urbanos y ecológicos"
+                                    />
+                                </div>
+                                <div class="card-title">
+                                    Pequeños agricultores urbanos y sustentables
+                                </div>
+                                <p class="card-desc">
+                                    Para aquellos que quieren una alimentacion
+                                    <b>sustentable y saludable</b>, frente a
+                                    alimentos convencionales, y cuentan con un
+                                    <b>espacio reducido</b>.
+                                </p>
+                            </div>
+                        </div>
+
+                        <div class="col-2">
+                            <div class="audience-col">
+                                <span class="subcard-group-label"
+                                    ><span class="flag-emoji">🇦🇷</span>
+                                    Argentina</span
+                                >
+                                <div class="card subcard">
+                                    <div
+                                        class="icon-badge"
+                                        style="--chart: var(--chart-2)"
+                                    >
+                                        <i data-lucide="droplets"></i>
+                                    </div>
+                                    <div class="place-line">
+                                        <strong>Cuyo</strong>
+                                        <span class="desc"
+                                            >— Emergencia hídrica</span
+                                        >
+                                    </div>
+                                </div>
+                                <div class="card subcard">
+                                    <div
+                                        class="icon-badge"
+                                        style="--chart: var(--chart-3)"
+                                    >
+                                        <i data-lucide="wind"></i>
+                                    </div>
+                                    <div class="place-line">
+                                        <strong>Patagonia</strong>
+                                        <span class="desc"
+                                            >— Desertificación</span
+                                        >
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="audience-col">
+                                <div class="card subcard">
+                                    <div
+                                        class="icon-badge"
+                                        style="--chart: var(--chart-1)"
+                                    >
+                                        <i data-lucide="flask-conical"></i>
+                                    </div>
+                                    <span class="desc">Sin agrotóxicos </span>
+                                </div>
+                                <div class="card subcard">
+                                    <div
+                                        class="icon-badge"
+                                        style="--chart: var(--chart-1)"
+                                    >
+                                        <i data-lucide="droplets"></i>
+                                    </div>
+                                    <span class="desc"
+                                        >Sin contaminación del agua
+                                    </span>
+                                </div>
+                                <div class="card subcard">
+                                    <div
+                                        class="icon-badge"
+                                        style="--chart: var(--chart-1)"
+                                    >
+                                        <i data-lucide="vector-square"></i>
+                                    </div>
+                                    <span class="desc"
+                                        >En espacios reducidos</span
+                                    >
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
-                <div class="card stat-card" style="--chart: var(--chart-5)">
-                  <div class="card-title"><div class="icon-badge"><i data-lucide="globe"></i></div> Universalidad</div>
-                  <ul class="bullet-list">
-                    <li><div class="icon-badge" style="--chart: var(--chart-5)"><i data-lucide="building-2"></i></div> Zonas urbanas o poco fértiles</li>
-                    <li><div class="icon-badge" style="--chart: var(--chart-5)"><i data-lucide="layers"></i></div> Homogeneización de los cultivos</li>
-                  </ul>
+            </section>
+
+            <!-- 5. MODELO DE NEGOCIO -->
+            <section class="slide" id="s5">
+                <div class="slide-inner">
+                    <span class="eyebrow"
+                        ><i data-lucide="briefcase"></i> Modelo de negocio</span
+                    >
+                    <h1>Planificación</h1>
+                    <p class="lead">
+                        El camino para construir una base confiable de clientes
+                        con el fin de mejorar el modelo y ampliar la oferta de
+                        cultivos y funcionalidades.
+                    </p>
+
+                    <div class="timeline">
+                        <div class="timeline-curve">
+                            <svg
+                                class="timeline-curve-svg"
+                                viewBox="0 0 900 200"
+                                preserveAspectRatio="none"
+                            >
+                                <defs>
+                                        <path
+                                            d="M0,0 L10,5 L0,10 z"
+                                            fill="var(--primary)"
+                                        />
+                                    </marker>
+                                </defs>
+                                <path
+                                    d="M150,192 C320,188 380,165 450,156 C560,142 650,40 745,9"
+                                    fill="none"
+                                    stroke="var(--primary)"
+                                    stroke-width="2.5"
+                                    marker-end="url(#timelineArrow)"
+                                />
+                            </svg>
+                            <div
+                                class="timeline-dot timeline-dot-challenge"
+                                style="left: 16.6%; bottom: 4%"
+                            >
+                                0
+                            </div>
+                            <div
+                                class="timeline-dot"
+                                style="left: 50%; bottom: 22%"
+                            >
+                                1
+                            </div>
+                            <div
+                                class="timeline-dot"
+                                style="left: 83.4%; bottom: 96%"
+                            >
+                                2
+                            </div>
+                        </div>
+
+                        <div class="timeline-cards">
+                            <div class="card stage-card stage-card-challenge">
+                                <div
+                                    class="icon-badge lg"
+                                    style="--chart: var(--chart-1)"
+                                >
+                                    <i data-lucide="target"></i>
+                                </div>
+                                <span
+                                    class="stage-tag"
+                                    style="--chart: var(--chart-1)"
+                                    >El desafío</span
+                                >
+                                <h3>Conseguir datos suficientes</h3>
+                                <ul class="bullet-list">
+                                    <li>
+                                        <div
+                                            class="icon-badge"
+                                            style="--chart: var(--chart-1)"
+                                        >
+                                            <i data-lucide="trending-up"></i>
+                                        </div>
+                                        Mejorar los modelos
+                                    </li>
+                                    <li>
+                                        <div
+                                            class="icon-badge"
+                                            style="--chart: var(--chart-1)"
+                                        >
+                                            <i data-lucide="sprout"></i>
+                                        </div>
+                                        Ampliar catálogo de cultivos
+                                    </li>
+                                </ul>
+                            </div>
+
+                            <div class="timeline-col">
+                                <div class="card stage-card">
+                                    <div
+                                        class="icon-badge lg"
+                                        style="--chart: var(--chart-2)"
+                                    >
+                                        <i data-lucide="flask-conical"></i>
+                                    </div>
+                                    <span
+                                        class="stage-tag"
+                                        style="--chart: var(--chart-2)"
+                                        >Validación</span
+                                    >
+                                    <h3>Prueba Piloto</h3>
+                                    <span
+                                        class="funding-tag"
+                                        style="--chart: var(--chart-2)"
+                                        ><i data-lucide="hand-coins"></i>
+                                        Financiamiento: Crowdfunding</span
+                                    >
+                                </div>
+                                <div class="card stage-card stage-card-ally">
+                                    <div
+                                        class="icon-badge"
+                                        style="--chart: var(--chart-2)"
+                                    >
+                                        <i data-lucide="handshake"></i>
+                                    </div>
+                                    <p>
+                                        Alianza estratégica con
+                                        <b>organizaciones agroecológicas</b>
+                                    </p>
+                                </div>
+                                <div class="card exchange-wrap">
+                                    <p class="exchange-wrap-title">
+                                        Para el productor
+                                    </p>
+                                    <div class="exchange-grid">
+                                    <div
+                                        class="exchange-card"
+                                        style="--chart: var(--chart-2)"
+                                    >
+                                        <span class="exchange-label"
+                                            ><i
+                                                data-lucide="gift"
+                                                style="
+                                                    width: 1rem;
+                                                    height: 1rem;
+                                                "
+                                            ></i>
+                                            Recompensa</span
+                                        >
+                                        <ul class="reward-list">
+                                            <li>Acceso anticipado</li>
+                                            <li>
+                                                <span class="reward-premium"
+                                                    ><i
+                                                        data-lucide="circle-star"
+                                                    ></i>
+                                                    Plan premium</span
+                                                >
+                                            </li>
+                                        </ul>
+                                    </div>
+                                    <div
+                                        class="exchange-card"
+                                        style="--chart: var(--chart-2)"
+                                    >
+                                        <span class="exchange-label"
+                                            ><i
+                                                data-lucide="hand-heart"
+                                                style="
+                                                    width: 1rem;
+                                                    height: 1rem;
+                                                "
+                                            ></i>
+                                            Retribución</span
+                                        >
+                                        <ul class="reward-list">
+                                            <li>Donaciones</li>
+                                            <li>
+                                                <i
+                                                    data-lucide="database"
+                                                    style="
+                                                        width: 0.85rem;
+                                                        height: 0.85rem;
+                                                    "
+                                                ></i>
+                                                <b>Datos</b> para el modelo
+                                            </li>
+                                        </ul>
+                                    </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="timeline-col">
+                                <div class="card stage-card">
+                                    <div
+                                        class="icon-badge lg"
+                                        style="--chart: var(--chart-3)"
+                                    >
+                                        <i data-lucide="rocket"></i>
+                                    </div>
+                                    <span
+                                        class="stage-tag"
+                                        style="--chart: var(--chart-3)"
+                                        >Crecimiento</span
+                                    >
+                                    <h3>Lanzamiento publico</h3>
+                                    <span
+                                        class="funding-tag"
+                                        style="--chart: var(--chart-3)"
+                                        ><i data-lucide="credit-card"></i>
+                                        Financiamiento: Suscripción</span
+                                    >
+                                </div>
+
+                                <div class="card plans-card">
+                                    <div class="card-title">
+                                        <div
+                                            class="icon-badge"
+                                            style="--chart: var(--chart-3)"
+                                        >
+                                            <i data-lucide="credit-card"></i>
+                                        </div>
+                                        Planes de suscripción
+                                    </div>
+                                    <div class="plans-grid">
+                                        <div class="plan-card">
+                                            <span class="plan-name"
+                                                ><i
+                                                    data-lucide="badge-percent"
+                                                ></i>
+                                                Free Trial</span
+                                            >
+                                            <p class="plan-desc">
+                                                Un <b>mes</b> de plan premium
+                                            </p>
+                                        </div>
+                                        <div class="plan-card">
+                                            <span class="plan-name"
+                                                >Básico</span
+                                            >
+                                            <p class="plan-desc">
+                                                Simulaciones
+                                                <b>limitadas</b>/mes
+                                            </p>
+                                        </div>
+                                        <div
+                                            class="plan-card plan-card-premium"
+                                        >
+                                            <span
+                                                class="plan-name"
+                                                style="--chart: var(--chart-3)"
+                                                ><i
+                                                    data-lucide="circle-star"
+                                                ></i>
+                                                Premium</span
+                                            >
+                                            <p class="plan-desc">
+                                                Simulaciones <b>ilimitadas</b>
+                                            </p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
-              </div>
-            </div>
+            </section>
 
-            <div class="context-section">
-              <h2 class="context-heading context-heading-con"><i data-lucide="alert-triangle"></i> Desventajas</h2>
-              <div class="col-2">
-                <div class="card problem-card">
-                  <div class="card-title"><div class="icon-badge" style="--chart: var(--chart-4)"><i data-lucide="banknote"></i></div> Alta inversión inicial</div>
-                  <p class="card-desc">Equipar un sistema funcional exige <b>componentes especializados</b> desde el primer día.</p>
-                  <ul class="bullet-list">
-                    <li><div class="icon-badge" style="--chart: var(--chart-4)"><i data-lucide="gauge"></i></div> Medidores de conductividad y pH para la solución nutritiva</li>
-                    <li><div class="icon-badge" style="--chart: var(--chart-4)"><i data-lucide="lightbulb"></i></div> Sistemas de iluminación</li>
-                    <li><div class="icon-badge" style="--chart: var(--chart-4)"><i data-lucide="wind"></i></div> Control del aire</li>
-                  </ul>
+            <!-- 6. GRACIAS / CONTACTO -->
+            <section class="slide cover" id="s6">
+                <div class="brand-mark">
+                    <i data-lucide="heart-handshake"></i>
                 </div>
-
-                <div class="card problem-card">
-                  <div class="card-title"><div class="icon-badge" style="--chart: var(--chart-3)"><i data-lucide="wrench"></i></div> Mantenimiento y personal calificado</div>
-                  <p class="card-desc">Mantener el sistema equilibrado exige <b>conocimiento técnico constante</b>: cualquier desvío en nutrientes, pH o ambiente impacta el rendimiento.</p>
-                  <ul class="bullet-list">
-                    <li><div class="icon-badge" style="--chart: var(--chart-3)"><i data-lucide="wrench"></i></div> Ajustes frecuentes para equilibrar el sistema</li>
-                    <li><div class="icon-badge" style="--chart: var(--chart-3)"><i data-lucide="brain"></i></div> Curva de aprendizaje pronunciada para nuevos productores</li>
-                  </ul>
+                <h1>¡Gracias!</h1>
+                <p class="tagline">
+                    Gracias por tu tiempo y por considerar a DigiTwin como
+                    aliado para el futuro de la hidroponía.
+                </p>
+                <div class="cover-contact">
+                    <span class="contact-name">Martín González Prieto</span>
+                    <span class="contact-row">
+                        <svg
+                            viewBox="0 0 24 24"
+                            fill="currentColor"
+                            aria-hidden="true"
+                        >
+                            <path
+                                d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 1 1 0-4.124 2.062 2.062 0 0 1 0 4.124zM7.114 20.452H3.558V9h3.556v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"
+                            />
+                        </svg>
+                        mgonpri
+                    </span>
                 </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </section>
+            </section>
+        </main>
 
-    <!-- 3. NUESTRO PRODUCTO -->
-    <section class="slide" id="s3">
-      <div class="slide-inner">
-        <div class="s5-layout">
-          <div class="s5-left">
-            <div>
-              <span class="eyebrow"><i data-lucide="sprout"></i> ¿Cómo lo resolvemos?</span>
-              <p class="lead"><b class="hint">DigiTwin</b> es una plataforma de <b>gemelos digitales</b> que simula el crecimiento de cultivos hidropónicos antes y durante la producción, dando solución a los <b>problemas de inversión y conocimiento técnico</b>, y poniendo en valor cada decisión del cultivo.</p>
-            </div>
+        <script>
+            window.addEventListener("DOMContentLoaded", () => {
+                if (window.lucide) lucide.createIcons();
 
-            <div class="cycle-circle">
-              <svg class="cycle-svg" viewBox="0 0 440 440">
-                <defs>
-                  <marker id="cycleArrow" viewBox="0 0 10 10" refX="7" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
-                    <path d="M0,0 L10,5 L0,10 z" fill="var(--primary)"/>
-                  </marker>
-                </defs>
-                <path d="M220,50 A170,170 0 0 1 367,305" fill="none" stroke="var(--primary)" stroke-width="2.5" marker-end="url(#cycleArrow)"/>
-                <path d="M367,305 A170,170 0 0 1 73,305" fill="none" stroke="var(--primary)" stroke-width="2.5" marker-end="url(#cycleArrow)"/>
-                <path d="M73,305 A170,170 0 0 1 220,50" fill="none" stroke="var(--primary)" stroke-width="2.5" marker-end="url(#cycleArrow)"/>
-              </svg>
+                const deck = document.getElementById("deck");
+                const slides = Array.from(document.querySelectorAll(".slide"));
+                const dots = Array.from(document.querySelectorAll("#dotnav a"));
+                const counter = document.getElementById("counter");
+                const total = slides.length;
 
-              <div class="cycle-center">
-                <i data-lucide="refresh-cw"></i>
-                <span>Ciclo continuo</span>
-              </div>
+                const setActive = (i) => {
+                    dots.forEach((d) =>
+                        d.classList.toggle("active", Number(d.dataset.i) === i),
+                    );
+                    counter.textContent =
+                        String(i).padStart(2, "0") +
+                        " / " +
+                        String(total).padStart(2, "0");
+                };
 
-              <div class="cycle-node" style="left:50%; top:11.4%;">
-                <div class="icon-badge lg" style="--chart: var(--chart-2)"><i data-lucide="clipboard-list"></i></div>
-                <span class="label">Medir</span>
-                <span class="sub">Datos del cultivo</span>
-              </div>
-              <div class="cycle-node cycle-node-highlight" style="left:83.4%; top:69.3%;">
-                <div class="icon-badge lg digitwin-mark"><i data-lucide="sprout"></i></div>
-                <span class="label">Simular</span>
-                <span class="sub">DigiTwin (PCSE/WOFOST)</span>
-              </div>
-              <div class="cycle-node" style="left:16.6%; top:69.3%;">
-                <div class="icon-badge lg" style="--chart: var(--chart-3)"><i data-lucide="trending-up"></i></div>
-                <span class="label">Mejorar</span>
-                <span class="sub">Decisiones de cultivo</span>
-              </div>
-            </div>
-          </div>
+                const io = new IntersectionObserver(
+                    (entries) => {
+                        entries.forEach((e) => {
+                            if (e.isIntersecting) {
+                                const idx = slides.indexOf(e.target) + 1;
+                                setActive(idx);
+                            }
+                        });
+                    },
+                    { root: deck, threshold: 0.6 },
+                );
+                slides.forEach((s) => io.observe(s));
 
-          <div class="s5-right">
-            <div class="s5-cascade">
-              <div class="shot-frame s5-shot primary">
-                <div class="shot-frame-bar">
-                  <span class="dot dot-red"></span><span class="dot dot-yellow"></span><span class="dot dot-green"></span>
-                  <span class="shot-frame-url">digitwin.app/config</span>
-                </div>
-                <img src="img/config.png" alt="Configuración de una simulación en DigiTwin" />
-              </div>
-              <div class="shot-frame s5-shot secondary">
-                <div class="shot-frame-bar">
-                  <span class="dot dot-red"></span><span class="dot dot-yellow"></span><span class="dot dot-green"></span>
-                  <span class="shot-frame-url">digitwin.app/resultados</span>
-                </div>
-                <img src="img/results.png" alt="Resultados de una simulación en DigiTwin" />
-              </div>
-            </div>
-            <p class="shot-label" style="margin:4.25rem;"><i data-lucide="layout-dashboard" style="width:0.85rem;height:0.85rem"></i> Configuración y resultados de una simulación en DigiTwin</p>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- 4. OPORTUNIDAD -->
-    <section class="slide" id="s4">
-      <div class="slide-inner">
-        <span class="eyebrow"><i data-lucide="target"></i> Publico objetivo</span>
-        <h1>Dos tipos de clientes listos para adoptar hidroponía inteligente</h1>
-
-        <div class="col-2">
-          <div class="audience-col">
-            <div class="card">
-              <div class="card-photo">
-                <span class="audience-tag"><i data-lucide="flag"></i> Argentina</span>
-                <img src="img/zonas-marginales.jpg" alt="Productores agrícolas locales en zonas extremas" />
-              </div>
-              <div class="card-title">
-                Productores agrícolas locales en zonas extremas
-              </div>
-              <p class="card-desc">Maximiza recursos en lugares con dificultad para cultivar de forma convencional producto de sus <b>condiciones climáticas</b> o producto del <b>uso intensivo del suelo</b>.</p>
-            </div>
-
-            <div class="card subcard">
-              <div class="icon-badge" style="--chart: var(--chart-2)"><i data-lucide="droplets"></i></div>
-              <div><strong>Cuyo</strong><br/><span class="desc">Emergencia hídrica</span></div>
-            </div>
-            <div class="card subcard">
-              <div class="icon-badge" style="--chart: var(--chart-3)"><i data-lucide="wind"></i></div>
-              <div><strong>Patagonia</strong><br/><span class="desc">Desertificación</span></div>
-            </div>
-          </div>
-
-          <div class="audience-col">
-            <div class="card">
-              <div class="card-photo">
-                <span class="audience-tag"><i data-lucide="globe"></i> Internacional</span>
-                <img src="img/huerto-urbano.jpg" alt="Pequeños agricultores urbanos y ecológicos" />
-              </div>
-              <div class="card-title">
-                Pequeños agricultores urbanos y sustentables
-              </div>
-              <p class="card-desc"><b>Tendencia internacional</b> de una alimentacion sustentable y saludabla frente a alimentos convencionales.</p>
-            </div>
-
-            <div class="card subcard">
-              <div class="icon-badge" style="--chart: var(--chart-1)"><i data-lucide="flask-conical"></i></div>
-              <strong>Sin agrotóxicos</strong>
-            </div>
-            <div class="card subcard">
-              <div class="icon-badge" style="--chart: var(--chart-1)"><i data-lucide="droplets"></i></div>
-              <strong>Sin contaminación del agua</strong>
-            </div>
-            <div class="card subcard">
-              <div class="icon-badge" style="--chart: var(--chart-1)"><i data-lucide="vector-square"></i></div>
-              <strong>En espacios reducidos</strong>
-            </div>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- 5. MODELO DE NEGOCIO -->
-    <section class="slide" id="s5">
-      <div class="slide-inner">
-        <span class="eyebrow"><i data-lucide="briefcase"></i> Modelo de negocio</span>
-        <h1>Planificación</h1>
-        <p class="lead">El camino para construir una base confiable de clientes con el fin de mejorar el modelo y ampliar la oferta de cultivos y funcionalidades.</p>
-
-        <div class="timeline">
-          <div class="timeline-curve">
-            <svg class="timeline-curve-svg" viewBox="0 0 900 200" preserveAspectRatio="none">
-              <defs>
-                <marker id="timelineArrow" viewBox="0 0 10 10" refX="7" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
-                  <path d="M0,0 L10,5 L0,10 z" fill="var(--primary)"/>
-                </marker>
-              </defs>
-              <path d="M150,192 C320,188 380,165 450,156 C560,142 650,40 745,9" fill="none" stroke="var(--primary)" stroke-width="2.5" marker-end="url(#timelineArrow)"/>
-            </svg>
-            <div class="timeline-dot timeline-dot-challenge" style="left:16.6%; bottom:4%;">0</div>
-            <div class="timeline-dot" style="left:50%; bottom:22%;">1</div>
-            <div class="timeline-dot" style="left:83.4%; bottom:96%;">2</div>
-          </div>
-
-          <div class="timeline-cards">
-            <div class="card stage-card stage-card-challenge">
-              <div class="icon-badge lg" style="--chart: var(--chart-1)"><i data-lucide="target"></i></div>
-              <span class="stage-tag" style="--chart: var(--chart-1)">El desafío</span>
-              <h3>Conseguir datos suficientes</h3>
-              <ul class="bullet-list">
-                <li><div class="icon-badge" style="--chart: var(--chart-1)"><i data-lucide="trending-up"></i></div> Mejorar los modelos</li>
-                <li><div class="icon-badge" style="--chart: var(--chart-1)"><i data-lucide="sprout"></i></div> Ampliar catálogo de cultivos</li>
-              </ul>
-            </div>
-
-            <div class="timeline-col">
-              <div class="card stage-card">
-                <div class="icon-badge lg" style="--chart: var(--chart-2)"><i data-lucide="flask-conical"></i></div>
-                <span class="stage-tag" style="--chart: var(--chart-2)">Validación</span>
-                <h3>Prueba Piloto</h3>
-                <span class="funding-tag" style="--chart: var(--chart-2)"><i data-lucide="hand-coins"></i> Financiamiento: Crowdfunding</span>
-              </div>
-              <div class="card stage-card stage-card-ally">
-                <div class="icon-badge" style="--chart: var(--chart-1)"><i data-lucide="handshake"></i></div>
-                <p>Alianza estratégica con <b>organizaciones agroecológicas</b></p>
-              </div>
-              <div class="exchange-grid">
-                <div class="exchange-card" style="--chart: var(--chart-3)">
-                  <span class="exchange-label"><i data-lucide="gift" style="width:0.75rem;height:0.75rem;"></i> Recompensa</span>
-                  <ul class="reward-list">
-                    <li>Acceso anticipado</li>
-                    <li><span class="reward-premium"><i data-lucide="circle-star"></i> Plan premium</span></li>
-                  </ul>
-                  <span class="exchange-direction"><i data-lucide="arrow-right"></i> Para el productor</span>
-                </div>
-                <div class="exchange-card" style="--chart: var(--chart-1)">
-                  <span class="exchange-label"><i data-lucide="hand-heart" style="width:0.75rem;height:0.75rem;"></i> Retribución</span>
-                  <ul class="reward-list">
-                    <li>Donaciones</li>
-                    <li><i data-lucide="database" style="width:0.85rem;height:0.85rem;"></i> <b>Datos</b> para el modelo</li>
-                  </ul>
-                  <span class="exchange-direction"><i data-lucide="arrow-left"></i> Del productor</span>
-                </div>
-              </div>
-            </div>
-
-            <div class="timeline-col">
-              <div class="card stage-card">
-                <div class="icon-badge lg" style="--chart: var(--chart-3)"><i data-lucide="rocket"></i></div>
-                <span class="stage-tag" style="--chart: var(--chart-3)">Crecimiento</span>
-                <h3>Lanzamiento publico</h3>
-                <span class="funding-tag" style="--chart: var(--chart-3)"><i data-lucide="credit-card"></i> Financiamiento: Suscripción</span>
-               </div>
-
-              <div class="card plans-card">
-                <div class="card-title"><div class="icon-badge" style="--chart: var(--chart-3)"><i data-lucide="credit-card"></i></div> Planes de suscripción</div>
-                <div class="plans-grid">
-                  <div class="plan-card">
-                    <span class="plan-name"><i data-lucide="badge-percent"></i> Free Trial</span>
-                    <p class="plan-desc">Un <b>mes</b> de plan premium</p>
-                  </div>
-                  <div class="plan-card">
-                    <span class="plan-name">Básico</span>
-                    <p class="plan-desc">Simulaciones <b>limitadas</b>/mes</p>
-                  </div>
-                  <div class="plan-card plan-card-premium">
-                    <span class="plan-name" style="--chart: var(--chart-3)"><i data-lucide="circle-star"></i> Premium</span>
-                    <p class="plan-desc">Simulaciones <b>ilimitadas</b></p>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- 6. GRACIAS / CONTACTO -->
-    <section class="slide cover" id="s6">
-      <div class="brand-mark"><i data-lucide="heart-handshake"></i></div>
-      <h1>¡Gracias!</h1>
-      <p class="tagline">Gracias por tu tiempo y por considerar a DigiTwin como aliado para el futuro de la hidroponía.</p>
-      <div class="cover-contact">
-        <span class="contact-name">Martín González Prieto</span>
-        <span class="contact-row">
-          <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 1 1 0-4.124 2.062 2.062 0 0 1 0 4.124zM7.114 20.452H3.558V9h3.556v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>
-          mgonpri
-        </span>
-      </div>
-    </section>
-
-  </main>
-
-  <script>
-    window.addEventListener('DOMContentLoaded', () => {
-      if (window.lucide) lucide.createIcons();
-
-      const deck = document.getElementById('deck');
-      const slides = Array.from(document.querySelectorAll('.slide'));
-      const dots = Array.from(document.querySelectorAll('#dotnav a'));
-      const counter = document.getElementById('counter');
-      const total = slides.length;
-
-      const setActive = (i) => {
-        dots.forEach(d => d.classList.toggle('active', Number(d.dataset.i) === i));
-        counter.textContent = String(i).padStart(2, '0') + ' / ' + String(total).padStart(2, '0');
-      };
-
-      const io = new IntersectionObserver((entries) => {
-        entries.forEach(e => {
-          if (e.isIntersecting) {
-            const idx = slides.indexOf(e.target) + 1;
-            setActive(idx);
-          }
-        });
-      }, { root: deck, threshold: 0.6 });
-      slides.forEach(s => io.observe(s));
-
-      document.addEventListener('keydown', (e) => {
-        const current = Number(document.querySelector('#dotnav a.active').dataset.i);
-        if (e.key === 'ArrowDown' || e.key === 'ArrowRight' || e.key === 'PageDown') {
-          if (current < total) document.getElementById('s' + (current + 1)).scrollIntoView({ behavior: 'smooth' });
-          e.preventDefault();
-        } else if (e.key === 'ArrowUp' || e.key === 'ArrowLeft' || e.key === 'PageUp') {
-          if (current > 1) document.getElementById('s' + (current - 1)).scrollIntoView({ behavior: 'smooth' });
-          e.preventDefault();
-        }
-      });
-    });
-  </script>
-</body>
+                document.addEventListener("keydown", (e) => {
+                    const current = Number(
+                        document.querySelector("#dotnav a.active").dataset.i,
+                    );
+                    if (
+                        e.key === "ArrowDown" ||
+                        e.key === "ArrowRight" ||
+                        e.key === "PageDown"
+                    ) {
+                        if (current < total)
+                            document
+                                .getElementById("s" + (current + 1))
+                                .scrollIntoView({ behavior: "smooth" });
+                        e.preventDefault();
+                    } else if (
+                        e.key === "ArrowUp" ||
+                        e.key === "ArrowLeft" ||
+                        e.key === "PageUp"
+                    ) {
+                        if (current > 1)
+                            document
+                                .getElementById("s" + (current - 1))
+                                .scrollIntoView({ behavior: "smooth" });
+                        e.preventDefault();
+                    }
+                });
+            });
+        </script>
+    </body>
 </html>
